@@ -6,12 +6,12 @@ import Projects from './Projects.vue';
 import VueResource from 'vue-resource';
 import Vuetify from 'vuetify'
 
-Vue.use(Vuetify)
+Vue.use(Vuetify);
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.http.options.emulateJSON = true;
 
-import('path/to/node_modules/vuetify/dist/vuetify.min.css') // Ensure you are using css-loader
+// import('./node_modules/vuetify/dist/vuetify.min.css') // Ensure you are using css-loader
 
 const routes = [
     {

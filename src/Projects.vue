@@ -17,21 +17,27 @@
 
         <div v-else>
             <div id="projects" class="container-fluid">
-                <div class="row">
-                    <div id="project" v-for="project in projects" class="col-sm-4">
-                        <div class="v-card" style="width: 20rem;">
-                            <img class="v-card-media" src="https://images.vice.com/vice/images/articles/meta/2014/12/30/tony-hawk-talks-about-the-rise-of-the-hoverboard-456-1419972535.jpeg?crop=1xw:1xh;center,center&resize=1050:*" alt="project img" width="200" height="300"/>
-                            <div class="card-block">
-                                <h4 class="card-title">{{ project.title }}</h4>
-                                <p class="card-text"> {{ project.subtitle }}</p>
-                                <!--<p class="card-text"> {{ project.description }}</p>-->
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+                <div id="project" v-for="project in projects" class="col-sm-4">
+                <v-layout>
+                    <v-flex xs12 sm6 offset-sm3>
+                        <v-card>
+                            <v-card-media src="https://images.vice.com/vice/images/articles/meta/2014/12/30/tony-hawk-talks-about-the-rise-of-the-hoverboard-456-1419972535.jpeg?crop=1xw:1xh;center,center&resize=1050:*" width="200" height="300"/>
+                            <v-card-title primary-title>
+                                <div>
+                                    <h3 class="headline mb-0">{{ project.title }} </h3>
+                                    <div> {{project.subtitle }} </div>
+                                </div>
+                            </v-card-title>
+                            <v-card-actions>
+                                <v-btn flat class="orange--text">Share</v-btn>
+                                <v-btn flat class="orange--text">Explore</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-flex>
+                </v-layout>
             </div>
         </div>
+    </div>
     </div>
 
 </template>
