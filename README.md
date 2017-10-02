@@ -1,4 +1,4 @@
-# chat-app
+# Crowd Sourcing website
 
 > A Vue.js project
 
