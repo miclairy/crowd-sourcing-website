@@ -1,13 +1,13 @@
 <template>
   <div id="app">
-      <v-toolbar>
-        <v-toolbar-title>Title</v-toolbar-title>
+      <v-toolbar class="light dense">
+        <v-toolbar-title>Dream Starter</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-side-icon class="hidden-md-and-up"></v-toolbar-side-icon>
         <v-toolbar-items class="hidden-sm-and-down">
-          <v-btn flat>Link One</v-btn>
-          <v-btn flat>Link Two</v-btn>
-          <v-btn flat>Link Three</v-btn>
+          <v-btn flat>Projects</v-btn>
+          <v-btn flat>Sign Up</v-btn>
+          <v-btn flat>Login</v-btn>
         </v-toolbar-items>
       </v-toolbar>
     <router-view></router-view>
@@ -32,7 +32,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 
 h1, h2 {
