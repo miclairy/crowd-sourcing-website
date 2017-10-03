@@ -59,9 +59,9 @@
             login : function () {
                 this.$http.post('http://localhost:4941/api/v2/users/login?username=' + this.username + "&password=" + this.password)
                     .then(function (response) {
-                        console.log(response.status);
                         if (response.status == 200) {
                             this.errorFlag = false;
+                            this.$store.commit('setValues', response.token, response.id);
                             this.$router.push("/projects")
                         } else {
                             this.errorFlag = true;

@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 import Home from './Home.vue';
 import Projects from './Projects.vue';
 import VueResource from 'vue-resource';
+import Vuex from 'vuex'
 import Vuetify from 'vuetify'
 import ProjectDetails from './ProjectDetails.vue';
 import Login from './Login.vue'
@@ -12,6 +13,7 @@ import SignUp from './SignUp.vue'
 Vue.use(Vuetify);
 Vue.use(VueRouter);
 Vue.use(VueResource);
+Vue.use(Vuex);
 Vue.http.options.emulateJSON = true;
 
 // import('./node_modules/vuetify/dist/vuetify.min.css') // Ensure you are using css-loader
@@ -46,8 +48,28 @@ const router = new VueRouter({
     mode: 'history'
 });
 
+const store = new Vuex.Store({
+    state: {
+        token: "",
+        id: -1
+    },
+    mutations: {
+        setValues (state, token, id) {
+            state.token = token;
+            state.id = id;
+        },
+        logout (state){
+            state.token = "";
+            state.id = -1;
+            alert("Continue dreaming later")
+        }
+    }
+});
+
 new Vue({
   el: '#app',
   router: router,
+    store : store,
   render: h => h(App)
 });
+

@@ -7,7 +7,8 @@
         <v-toolbar-items class="hidden-sm-and-down">
           <v-btn flat :to="{ name:'projects'}">Projects</v-btn>
             <v-btn flat :to="{ path:'/signup'}">Sign Up</v-btn>
-            <v-btn flat :to="{ path: '/login'}">Login</v-btn>
+            <v-btn v-if="isLoggedIn()" flat :to="{ path: '/login'}">Login</v-btn>
+          <v-btn v-else flat v-on:click="logout()">Log out</v-btn>
         </v-toolbar-items>
       </v-toolbar>
     <router-view></router-view>
@@ -16,9 +17,18 @@
 
 <script>
 export default {
-    name: 'Dream Starter App',
-
+    name: 'App',
+    methods : {
+        isLoggedIn : function () {
+            return this.$store.state.id == -1;
+        },
+        logout : function () {
+            this.$store.commit('logout');
+        }
 }
+}
+
+
 </script>
 
 <style>
