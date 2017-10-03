@@ -9,13 +9,14 @@ import Vuetify from 'vuetify'
 import ProjectDetails from './ProjectDetails.vue';
 import Login from './Login.vue'
 import SignUp from './SignUp.vue'
+import CreateProject from './CreateProject.vue'
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(Vuex);
 Vue.http.options.emulateJSON = true;
-
+Vue.http.headers.common['Content-Type'] = 'application/json';
 // import('./node_modules/vuetify/dist/vuetify.min.css') // Ensure you are using css-loader
 
 const routes = [
@@ -40,6 +41,10 @@ const routes = [
     {
         path: '/signup',
         component: SignUp
+    },
+    {
+        path: '/projects/create',
+        component: CreateProject
     }
 ];
 

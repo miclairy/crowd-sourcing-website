@@ -61,15 +61,16 @@
         },
         methods: {
             signUp : function () {
-                this.$http.post('http://localhost:4941/api/v2/users', {
+                var userData = {
                     "username": this.username,
                     "email": this.email,
                     "password": this.password,
-                    "location": this.location
-                })
+                    "location": this.location};
+                this.$http.post('http://localhost:4941/api/v2/users', JSON.stringify(userData))
                     .then(function (response) {
                         if (response.status == 201) {
                             this.errorFlag = false;
+                            alert("new user");
                             this.login();
                         } else {
                             this.errorFlag = true;
