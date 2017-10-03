@@ -6,6 +6,8 @@ import Projects from './Projects.vue';
 import VueResource from 'vue-resource';
 import Vuetify from 'vuetify'
 import ProjectDetails from './ProjectDetails.vue';
+import Login from './Login.vue'
+import SignUp from './SignUp.vue'
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
@@ -29,6 +31,14 @@ const routes = [
         name: "project",
         component: ProjectDetails
     },
+    {
+        path: '/login',
+        component: Login
+    },
+    {
+        path: '/signup',
+        component: SignUp
+    }
 ];
 
 const router = new VueRouter({
