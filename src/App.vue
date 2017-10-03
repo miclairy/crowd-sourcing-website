@@ -1,12 +1,12 @@
 <template>
   <div id="app">
       <v-toolbar class="light dense">
-        <v-toolbar-title>Dream Starter</v-toolbar-title>
+        <v-toolbar-title> Dream Starter </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-side-icon class="hidden-md-and-up"></v-toolbar-side-icon>
         <v-toolbar-items class="hidden-sm-and-down">
-          <v-btn flat>Projects</v-btn>
-          <v-btn flat>Sign Up</v-btn>
+          <v-btn flat :to="{ name:'projects'}">Projects</v-btn>
+          <v-btn flat :to="{ route:'/'}">Sign Up</v-btn>
           <v-btn flat>Login</v-btn>
         </v-toolbar-items>
       </v-toolbar>

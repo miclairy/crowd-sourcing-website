@@ -5,6 +5,7 @@ import Home from './Home.vue';
 import Projects from './Projects.vue';
 import VueResource from 'vue-resource';
 import Vuetify from 'vuetify'
+import ProjectDetails from './ProjectDetails.vue';
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
@@ -26,7 +27,7 @@ const routes = [
     {
         path: '/projects/:projectId',
         name: "project",
-        component: Projects
+        component: ProjectDetails
     },
 ];
 
