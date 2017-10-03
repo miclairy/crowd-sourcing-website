@@ -3,11 +3,14 @@
         <v-card width="60">
             <h3>Access your Dreams</h3>
             <form >
-                <input class='register' type="text" placeholder="username"/>
-                <input class='register' type="text" placeholder="email"/>
-                <input class='register' type="text" placeholder="location"/>
-                <input  class='register' type="password" placeholder="password"/>
-                <button class="btnregister">Sign Up</button>
+                <input v-model="username" class='register' type="text" placeholder="username"/>
+                <input v-model="email" class='register' type="email" placeholder="email"/>
+                <input v-model="location" class='register' type="text" placeholder="location"/>
+                <input v-model="password" class='register' type="password" placeholder="password"/>
+                <button class="btnregister" type="button" v-on:click="signUp()">Sign Up</button>
+                <div v-if="errorFlag" style="color: darkred;">
+                    <p>Invalid Data Entered</p>
+                </div>
                 <p>Already registered? <router-link :to="{ path: '/login'}">Login</router-link></p>
             </form>
         </v-card>
@@ -43,3 +46,60 @@
         background: #43A047;
     }
 </style>
+
+<script>
+    export default {
+        data(){
+            return {
+                error: "",
+                errorFlag: false,
+                username: "",
+                password: "",
+                email: "",
+                location: ""
+            }
+        },
+        methods: {
+            signUp : function () {
+                this.$http.post('http://localhost:4941/api/v2/users', {
+                    "username": this.username,
+                    "email": this.email,
+                    "password": this.password,
+                    "location": this.location
+                })
+                    .then(function (response) {
+                        if (response.status == 201) {
+                            this.errorFlag = false;
+                            this.login();
+                        } else {
+                            this.errorFlag = true;
+                        }
+                    }, function (error) {
+                        this.error = error;
+                        this.errorFlag = true;
+                    });
+            },
+            login : function () {
+                this.$http.post('http://localhost:4941/api/v2/users/login?username=' + this.username + "&password=" + this.password)
+                    .then(function (response) {
+                        if (response.status == 200) {
+                            this.errorFlag = false;
+//                            this.$store.commit('setValues', response.token, response.id);
+//                            console.log(this.$store.state.token);
+                            // Store
+                            localStorage.setItem("id", response.id);
+                            localStorage.setItem("token", response.token);
+
+                            this.$router.push("/projects")
+                        } else {
+                            this.errorFlag = true;
+                        }
+                    }, function (error) {
+                        this.error = error;
+                        this.errorFlag = true;
+                    });
+            }
+        }
+    }
+
+</script>

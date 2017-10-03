@@ -20,14 +20,22 @@ export default {
     name: 'App',
     methods : {
         isLoggedIn : function () {
-            return this.$store.state.id == -1;
+            return localStorage.getItem("id") == "null";
         },
         logout : function () {
-            this.$store.commit('logout');
+            this.$http.post('http://localhost:4941/api/v2/users/logout', {}, {headers: {'x-authorization': localStorage.getItem("token")}})
+                .then(function (response) {
+                    if (response.status == 200) {
+                        localStorage.setItem("token", null);
+                        localStorage.setItem("id", null);
+                        this.$router.push('/logout');
+                    } else {
+                        console.log(response)
+                    }
+            });
         }
+    }
 }
-}
-
 
 </script>
 

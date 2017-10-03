@@ -48,28 +48,28 @@ const router = new VueRouter({
     mode: 'history'
 });
 
-const store = new Vuex.Store({
-    state: {
-        token: "",
-        id: -1
-    },
-    mutations: {
-        setValues (state, token, id) {
-            state.token = token;
-            state.id = id;
-        },
-        logout (state){
-            state.token = "";
-            state.id = -1;
-            alert("Continue dreaming later")
-        }
-    }
-});
+// const store = new Vuex.Store({
+//     state: {
+//         token: null,
+//         id: null
+//     },
+//     mutations: {
+//         setValues (state, token, id) {
+//             state.token = token;
+//             state.id = id;
+//         },
+//         logout (state){
+//             state.token = "";
+//             state.id = -1;
+//             alert("Continue dreaming later")
+//         }
+//     }
+// });
 
 new Vue({
   el: '#app',
   router: router,
-    store : store,
+    // store : store,
   render: h => h(App)
 });
 

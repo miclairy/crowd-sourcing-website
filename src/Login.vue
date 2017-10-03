@@ -61,7 +61,13 @@
                     .then(function (response) {
                         if (response.status == 200) {
                             this.errorFlag = false;
-                            this.$store.commit('setValues', response.token, response.id);
+//                            this.$store.commit('setValues', response.body.token, response.body.id);
+                           console.log(response.body.token);
+                            console.log(response.body.id);
+                            // Store
+                            localStorage.setItem("id", response.body.id);
+                            localStorage.setItem("token", response.body.token);
+
                             this.$router.push("/projects")
                         } else {
                             this.errorFlag = true;
