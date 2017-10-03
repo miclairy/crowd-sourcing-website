@@ -46,7 +46,6 @@
 </style>
 
 <script>
-    import Vue from "vue";
     export default {
         data(){
             return {
@@ -54,7 +53,6 @@
                 errorFlag: false,
                 username: "",
                 password: "",
-                bus: new Vue()
             }
         },
         methods: {
@@ -63,8 +61,6 @@
                     .then(function (response) {
                         console.log(response.status);
                         if (response.status == 200) {
-                            this.bus.$emit("token", response.token);
-                            this.bus.$emit("user", response.user);
                             this.errorFlag = false;
                             this.$router.push("/projects")
                         } else {

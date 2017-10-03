@@ -6,8 +6,8 @@
         <v-toolbar-side-icon class="hidden-md-and-up"></v-toolbar-side-icon>
         <v-toolbar-items class="hidden-sm-and-down">
           <v-btn flat :to="{ name:'projects'}">Projects</v-btn>
-          <v-btn flat :to="{ path:'/signup'}">Sign Up</v-btn>
-          <v-btn flat :to="{ path: '/login'}">Login</v-btn>
+            <v-btn flat :to="{ path:'/signup'}">Sign Up</v-btn>
+            <v-btn flat :to="{ path: '/login'}">Login</v-btn>
         </v-toolbar-items>
       </v-toolbar>
     <router-view></router-view>
@@ -16,7 +16,8 @@
 
 <script>
 export default {
-  name: 'app'
+    name: 'Dream Starter App',
+
 }
 </script>
 
