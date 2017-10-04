@@ -9,7 +9,7 @@
                 <input v-model="password" class='register' type="password" placeholder="password"/>
                 <button class="btnregister" type="button" v-on:click="signUp()">Sign Up</button>
                 <div v-if="errorFlag" style="color: darkred;">
-                    <p>Invalid Data Entered</p>
+                    <p> {{ error }}</p>
                 </div>
                 <p>Already registered? <router-link :to="{ path: '/login'}">Login</router-link></p>
             </form>
@@ -61,42 +61,58 @@
         },
         methods: {
             signUp : function () {
-                var userData = {
+                this.error = "";
+                let userData = {
                     "username": this.username,
                     "email": this.email,
                     "password": this.password,
-                    "location": this.location};
-                this.$http.post('http://localhost:4941/api/v2/users', JSON.stringify(userData))
-                    .then(function (response) {
-                        if (response.status == 201) {
-                            this.errorFlag = false;
-                            alert("new user");
-                            this.login();
-                        } else {
+                    "location": this.location
+                };
+                if (this.username.indexOf(' ') >= 0){
+                    this.error += "Username can not have spaces\n";
+                    this.errorFlag = true;
+                }
+                if (this.location.indexOf(' ') >= 0){
+                    this.error += "Location can not have spaces\n";
+                    this.errorFlag = true;
+                }
+                if (this.username.length <= 0 || this.password.length <= 0 || this.email.length <= 0 || this.location <= 0) {
+                    this.error += "All fields are compulsory\n";
+                    this.errorFlag = true;
+                }
+                if (this.errorFlag == false) {
+                    this.$http.post('http://localhost:4941/api/v2/users', JSON.stringify(userData))
+                        .then(function (response) {
+                            if (response.status == 201) {
+                                this.errorFlag = false;
+                                this.login();
+                            } else {
+                                this.errorFlag = true;
+                            }
+                        }, function (error) {
+                            this.error += "All fields are compulsory/n";
                             this.errorFlag = true;
-                        }
-                    }, function (error) {
-                        this.error = error;
-                        this.errorFlag = true;
-                    });
-            },
-            login : function () {
+                        });
+                }
+            }, login : function () {
                 this.$http.post('http://localhost:4941/api/v2/users/login?username=' + this.username + "&password=" + this.password)
                     .then(function (response) {
                         if (response.status == 200) {
                             this.errorFlag = false;
-//                            this.$store.commit('setValues', response.token, response.id);
-//                            console.log(this.$store.state.token);
+//                            this.$store.commit('setValues', response.body.token, response.body.id);
+                            console.log(response.body.token);
+                            console.log(response.body.id);
                             // Store
-                            localStorage.setItem("id", response.id);
-                            localStorage.setItem("token", response.token);
+                            localStorage.setItem("id", response.body.id);
+                            localStorage.setItem("token", response.body.token);
 
                             this.$router.push("/projects")
                         } else {
                             this.errorFlag = true;
+                            this.error += "Invalid Data Entered";
                         }
                     }, function (error) {
-                        this.error = error;
+                        this.error += "Invalid Data Entered";
                         this.errorFlag = true;
                     });
             }
