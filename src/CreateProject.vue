@@ -7,7 +7,7 @@
                     <v-subheader>Title</v-subheader>
                 </v-flex>
                 <v-flex xs8>
-                    <v-text-field v-model="title" label="Free Donuts"></v-text-field>
+                    <v-text-field v-model="title" value="New house for Eeyore" label="Free Donuts"></v-text-field>
                 </v-flex>
             </v-layout>
             <v-layout row>
@@ -15,7 +15,7 @@
                     <v-subheader>Subtitle</v-subheader>
                 </v-flex>
                 <v-flex xs8>
-                    <v-text-field v-model="subtitle" name="input-2-3" label="for everyone" single-line></v-text-field>
+                    <v-text-field v-model="subtitle" name="input-2-3" value="Lets build this together" label="for everyone" single-line></v-text-field>
                 </v-flex>
             </v-layout>
             <v-layout row>
@@ -23,7 +23,7 @@
                     <v-subheader>Description</v-subheader>
                 </v-flex>
                 <v-flex xs8>
-                    <v-text-field v-model="description" name="input-7-3" label="Talk about your project" multi-line></v-text-field>
+                    <v-text-field v-model="description" name="input-7-3" value="Eeyore's house fell down again and we are going to fix it" label="Talk about your project" multi-line></v-text-field>
                 </v-flex>
             </v-layout>
             <v-layout row>
@@ -42,7 +42,7 @@
                     <v-subheader>Target</v-subheader>
                 </v-flex>
                 <v-flex xs8>
-                    <v-text-field label="Amount" value="145120.00" prefix="$"></v-text-field>
+                    <v-text-field label="Amount" value="10021.00" prefix="$"></v-text-field>
                 </v-flex>
             </v-layout>
 
@@ -84,7 +84,7 @@
 
 
 
-        <button class="createbtn" type="button" v-on:click="create()">Create Project</button>
+        <button class="createbtn" type="button" v-on:click="createProject()">Create Project</button>
     </div>
 </template>
 
@@ -99,6 +99,21 @@
                 creators: [],
                 rewards: []
             }
+        },
+        methods : {
+            createProject: function(){
+                this.$http.post('http://localhost:4941/api/v2/projects', this.data, {headers: {'x-authorization': localStorage.getItem("token")}})
+                    .then(function (response) {
+                        if (response.status == 201){
+                            alert("created " + this.title);
+                        } else {
+                            console.log(response);
+                        }
+                    } , function (error) {
+                        console.log(error);
+                    })
+            }
+
         }
     }
 </script>

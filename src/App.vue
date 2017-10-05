@@ -7,9 +7,12 @@
         <v-toolbar-items class="hidden-sm-and-down">
           <v-btn flat :to="{ name:'projects'}">Projects</v-btn>
           <v-btn flat :to="{ path:'/create'}">Create</v-btn>
-            <v-btn v-if="isLoggedIn()" flat :to="{ path:'/signup'}">Sign Up</v-btn>
+          <v-btn flat v-if="! isLoggedIn()" :to="{ path: '/'}">{{ username }}</v-btn>
+
+          <v-btn v-if="isLoggedIn()" flat :to="{ path:'/signup'}">Sign Up</v-btn>
             <v-btn v-if="isLoggedIn()" flat :to="{ path: '/login'}">Login</v-btn>
           <v-btn v-else flat v-on:click="logout()">Log out</v-btn>
+
         </v-toolbar-items>
       </v-toolbar>
     <router-view></router-view>
@@ -19,10 +22,18 @@
 <script>
 export default {
     name: 'App',
+    data(){
+        return {
+            username : ""
+        }
+    },
     methods : {
         isLoggedIn : function () {
-            console.log(localStorage.getItem("id"));
-            return localStorage.getItem("id") == "null" || localStorage.getItem("id") == 'undefined' || localStorage.getItem('id') == null ;
+            let isUser = localStorage.getItem("id") == "null" || localStorage.getItem("id") == 'undefined' || localStorage.getItem('id') == null ;
+            if (! isUser){
+                this.getUser();
+            }
+            return isUser;
         },
         logout : function () {
             this.$http.post('http://localhost:4941/api/v2/users/logout', {}, {headers: {'x-authorization': localStorage.getItem("token")}})
@@ -30,11 +41,27 @@ export default {
                     if (response.status == 200) {
                         localStorage.setItem("token", null);
                         localStorage.setItem("id", null);
+                        this.username = "";
                         this.$router.push('/logout');
                     } else {
                         console.log(response)
                     }
             });
+        },
+        getUser : function () {
+              this.$http.get('http://localhost:4941/api/v2/users/' + localStorage.getItem("id"), {headers: {'x-authorization': localStorage.getItem("token")}})
+                  .then(function (response) {
+                      if (response.status == 200) {
+                          console.log(response.data.username);
+                          this.username = response.data.username;
+                          return true;
+                      } else {
+                          return false;
+                      }
+                  }, function (error) {
+                    return false;
+                })
+
         }
     }
 }
