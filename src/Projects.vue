@@ -51,6 +51,7 @@
         },
         methods: {
             getProjects: function () {
+                console.log(localStorage.getItem("id"));
                 this.$http.get('http://localhost:4941/api/v2/projects')
                     .then(function (response) {
                         this.projects = response.data;

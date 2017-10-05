@@ -72,10 +72,6 @@
                     this.error += "Username can not have spaces\n";
                     this.errorFlag = true;
                 }
-                if (this.location.indexOf(' ') >= 0){
-                    this.error += "Location can not have spaces\n";
-                    this.errorFlag = true;
-                }
                 if (this.username.length <= 0 || this.password.length <= 0 || this.email.length <= 0 || this.location <= 0) {
                     this.error += "All fields are compulsory\n";
                     this.errorFlag = true;

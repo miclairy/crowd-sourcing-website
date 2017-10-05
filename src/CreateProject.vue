@@ -7,7 +7,7 @@
                     <v-subheader>Title</v-subheader>
                 </v-flex>
                 <v-flex xs8>
-                    <v-text-field v-model="title" name="input-2-3" label="Free Donuts" single-line></v-text-field>
+                    <v-text-field v-model="title" label="Free Donuts"></v-text-field>
                 </v-flex>
             </v-layout>
             <v-layout row>
@@ -23,7 +23,7 @@
                     <v-subheader>Description</v-subheader>
                 </v-flex>
                 <v-flex xs8>
-                    <v-text-field v-model="subtitle" name="input-7-3" label="Talk about your project" multi-line></v-text-field>
+                    <v-text-field v-model="description" name="input-7-3" label="Talk about your project" multi-line></v-text-field>
                 </v-flex>
             </v-layout>
             <v-layout row>
@@ -31,19 +31,60 @@
                     <v-subheader>Error</v-subheader>
                 </v-flex>
                 <v-flex xs8>
-                    <v-text-field
-                            name="input-3-5"
-                            label="Hint Text"
-                            value="Input text"
+                    <v-text-field name="input-3-5" label="Hint Text" value="Input text"
                             :rules="[() => 'Username or Password is incorrect.']"
-                            error
-                            single-line
+                            error single-line
                     ></v-text-field>
                 </v-flex>
             </v-layout>
-        </v-container>
-        <button class="createbtn" type="button" v-on:click="create()">login</button>
+            <v-layout row>
+                <v-flex xs4>
+                    <v-subheader>Target</v-subheader>
+                </v-flex>
+                <v-flex xs8>
+                    <v-text-field label="Amount" value="145120.00" prefix="$"></v-text-field>
+                </v-flex>
+            </v-layout>
 
+            <v-layout row>
+                <v-flex xs4>
+                <v-subheader>Rewards</v-subheader>
+                </v-flex>
+                <v-flex xs8>
+                    <v-text-field label="Amount" value="10.00"
+                    ></v-text-field>
+                </v-flex>
+                <v-flex xs8>
+                    <v-text-field label="Description"></v-text-field>
+                </v-flex>
+                <v-spacer></v-spacer>
+
+                <v-flex xs8>
+                <v-btn class="pink" small top right fab>
+                    <v-icon>add</v-icon>
+                </v-btn>
+                </v-flex>
+            </v-layout>
+
+            <v-layout row>
+                <v-flex xs4>
+                    <v-subheader>Creators</v-subheader>
+                </v-flex>
+                <v-flex xs8>
+                    <v-text-field label="Username" :rules="[() => 'Username doesn\'t exist']" error ></v-text-field>
+                </v-flex>
+                <v-flex xs8>
+                    <v-btn class="pink" small top right fab>
+                        <v-icon>add</v-icon>
+                    </v-btn>
+                </v-flex>
+            </v-layout>
+        </v-container>
+
+
+
+
+        <button class="createbtn" type="button" v-on:click="create()">Create Project</button>
     </div>
 </template>
 

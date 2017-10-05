@@ -21,7 +21,8 @@ export default {
     name: 'App',
     methods : {
         isLoggedIn : function () {
-            return localStorage.getItem("id") == "null" || localStorage.getItem("id") == 'undefined' ;
+            console.log(localStorage.getItem("id"));
+            return localStorage.getItem("id") == "null" || localStorage.getItem("id") == 'undefined' || localStorage.getItem('id') == null ;
         },
         logout : function () {
             this.$http.post('http://localhost:4941/api/v2/users/logout', {}, {headers: {'x-authorization': localStorage.getItem("token")}})
@@ -41,29 +42,29 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+/*#app {*/
+  /*font-family: 'Avenir', Helvetica, Arial, sans-serif;*/
+  /*-webkit-font-smoothing: antialiased;*/
+  /*-moz-osx-font-smoothing: grayscale;*/
+  /*text-align: center;*/
+  /*color: #2c3e50;*/
+/*}*/
 
-h1, h2 {
-  font-weight: normal;
-}
+/*h1, h2 {*/
+  /*font-weight: normal;*/
+/*}*/
 
-ul {
-  list-style-type: none;
-  padding: 0;
-}
+/*ul {*/
+  /*list-style-type: none;*/
+  /*padding: 0;*/
+/*}*/
 
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
+/*li {*/
+  /*display: inline-block;*/
+  /*margin: 0 10px;*/
+/*}*/
 
-a {
-  color: #42b983;
-}
+/*a {*/
+  /*color: #42b983;*/
+/*}*/
 </style>
