@@ -52,7 +52,6 @@ export default {
               this.$http.get('http://localhost:4941/api/v2/users/' + localStorage.getItem("id"), {headers: {'x-authorization': localStorage.getItem("token")}})
                   .then(function (response) {
                       if (response.status == 200) {
-                          console.log(response.data.username);
                           this.username = response.data.username;
                           return true;
                       } else {

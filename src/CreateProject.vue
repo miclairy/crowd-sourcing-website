@@ -93,16 +93,21 @@
         data(){
             return {
                 title: "",
-                description: "",
                 subtitle: "",
+                description: "",
                 target: "",
-                creators: [],
-                rewards: []
+                creators: [ {
+                    "id" : localStorage.getItem('id')
+                }],
+                rewards: [ {
+                    "amount" : 0,
+                    "description" : "string"
+                }]
             }
         },
         methods : {
             createProject: function(){
-                this.$http.post('http://localhost:4941/api/v2/projects', this.data, {headers: {'x-authorization': localStorage.getItem("token")}})
+                this.$http.post('http://localhost:4941/api/v2/projects', JSON.stringify(this.data), {headers: {'x-authorization': localStorage.getItem("token")}})
                     .then(function (response) {
                         if (response.status == 201){
                             alert("created " + this.title);
