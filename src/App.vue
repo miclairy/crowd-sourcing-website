@@ -46,7 +46,11 @@ export default {
                     } else {
                         console.log(response)
                     }
-            });
+            }, function (error) {
+                    this.username = "";
+                    localStorage.setItem("token", null);
+                    localStorage.setItem("id", null);
+                });
         },
         getUser : function () {
               this.$http.get('http://localhost:4941/api/v2/users/' + localStorage.getItem("id"), {headers: {'x-authorization': localStorage.getItem("token")}})
@@ -58,7 +62,10 @@ export default {
                           return false;
                       }
                   }, function (error) {
-                    return false;
+                      localStorage.setItem("token", null);
+                      localStorage.setItem("id", null);
+                      this.username = "";
+                      return false;
                 })
 
         }

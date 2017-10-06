@@ -7,7 +7,7 @@
                     <v-subheader>Title</v-subheader>
                 </v-flex>
                 <v-flex xs8>
-                    <v-text-field v-model="title" value="New house for Eeyore" label="Free Donuts"></v-text-field>
+                    <v-text-field v-model="title" label="Free Donuts"></v-text-field>
                 </v-flex>
             </v-layout>
             <v-layout row>
@@ -15,7 +15,7 @@
                     <v-subheader>Subtitle</v-subheader>
                 </v-flex>
                 <v-flex xs8>
-                    <v-text-field v-model="subtitle" name="input-2-3" value="Lets build this together" label="for everyone" single-line></v-text-field>
+                    <v-text-field v-model="subtitle" name="input-2-3" label="for everyone" single-line></v-text-field>
                 </v-flex>
             </v-layout>
             <v-layout row>
@@ -23,7 +23,7 @@
                     <v-subheader>Description</v-subheader>
                 </v-flex>
                 <v-flex xs8>
-                    <v-text-field v-model="description" name="input-7-3" value="Eeyore's house fell down again and we are going to fix it" label="Talk about your project" multi-line></v-text-field>
+                    <v-text-field v-model="description" name="input-7-3" label="Talk about your project" multi-line></v-text-field>
                 </v-flex>
             </v-layout>
             <v-layout row>
@@ -42,7 +42,7 @@
                     <v-subheader>Target</v-subheader>
                 </v-flex>
                 <v-flex xs8>
-                    <v-text-field label="Amount" value="10021.00" prefix="$"></v-text-field>
+                    <v-text-field  v-model="target" label="Amount" value="10021.00" prefix="$"></v-text-field>
                 </v-flex>
             </v-layout>
 
@@ -92,22 +92,32 @@
     export default {
         data(){
             return {
-                title: "",
-                subtitle: "",
-                description: "",
-                target: "",
-                creators: [ {
-                    "id" : localStorage.getItem('id')
-                }],
-                rewards: [ {
-                    "amount" : 0,
-                    "description" : "string"
-                }]
+                title: "New house for Eeyore ",
+                subtitle: "Rebuild eeyores house",
+                description: "Rebuild eeyores house because it fell down :",
+                target: 10000,
+                creators: [],
+                rewards: []
             }
         },
         methods : {
+
             createProject: function(){
-                this.$http.post('http://localhost:4941/api/v2/projects', JSON.stringify(this.data), {headers: {'x-authorization': localStorage.getItem("token")}})
+                let project = {
+                    "title": this.title,
+                    "subtitle": this.subtitle,
+                    "description": this.description,
+                    "target": this.target,
+                    creators: [ {
+                        "id" : parseInt(localStorage.getItem('id'))
+                    }],
+                    rewards: [ {
+                        "amount" : 0,
+                        "description" : "string"
+                    }]
+                };
+                console.log(JSON.stringify(project));
+                this.$http.post('http://localhost:4941/api/v2/projects', JSON.stringify(project), {headers: {'x-authorization': localStorage.getItem("token")}})
                     .then(function (response) {
                         if (response.status == 201){
                             alert("created " + this.title);
