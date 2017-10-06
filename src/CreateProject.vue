@@ -28,17 +28,6 @@
             </v-layout>
             <v-layout row>
                 <v-flex xs4>
-                    <v-subheader>Error</v-subheader>
-                </v-flex>
-                <v-flex xs8>
-                    <v-text-field name="input-3-5" label="Hint Text" value="Input text"
-                            :rules="[() => 'Username or Password is incorrect.']"
-                            error single-line
-                    ></v-text-field>
-                </v-flex>
-            </v-layout>
-            <v-layout row>
-                <v-flex xs4>
                     <v-subheader>Target</v-subheader>
                 </v-flex>
                 <v-flex xs8>
@@ -51,20 +40,28 @@
                 <v-subheader>Rewards</v-subheader>
                 </v-flex>
                 <v-flex xs8>
-                    <v-text-field label="Amount" value="10.00"
-                    ></v-text-field>
+                    <v-text-field v-model="amount" label="Amount" value="10.00"></v-text-field>
                 </v-flex>
                 <v-flex xs8>
-                    <v-text-field label="Description"></v-text-field>
+                    <v-text-field v-model="reward_description" label="Description"></v-text-field>
                 </v-flex>
                 <v-spacer></v-spacer>
 
                 <v-flex xs8>
-                <v-btn class="pink" small top right fab>
-                    <v-icon>add</v-icon>
-                </v-btn>
+                <v-btn class="pink" small top right fab v-on:click="addReward()"> <v-icon>add</v-icon> </v-btn>
                 </v-flex>
             </v-layout>
+
+            <v-flex xs4 v-for="reward in rewards">
+                <v-layout row>
+                        <p> {{reward.amount}} </p>
+                    <v-spacer></v-spacer>
+                        <p> {{ reward.description }} </p>
+                    <v-spacer></v-spacer>
+                    <v-btn small v-on:click="deleteReward(reward)"> <v-icon>clear</v-icon></v-btn>
+                    <v-btn small v-on:click="editReward(reward)"> <v-icon>edit</v-icon></v-btn>
+                </v-layout>
+            </v-flex>
 
             <v-layout row>
                 <v-flex xs4>
@@ -97,12 +94,14 @@
                 description: "Rebuild eeyores house because it fell down :",
                 target: 10000,
                 creators: [],
-                rewards: []
+                rewards: [],
+                amount: 10,
+                reward_description: ""
             }
         },
         methods : {
-
             createProject: function(){
+                this.addReward();
                 let project = {
                     "title": this.title,
                     "subtitle": this.subtitle,
@@ -111,10 +110,7 @@
                     creators: [ {
                         "id" : parseInt(localStorage.getItem('id'))
                     }],
-                    rewards: [ {
-                        "amount" : 0,
-                        "description" : "string"
-                    }]
+                    rewards: this.rewards
                 };
                 console.log(JSON.stringify(project));
                 this.$http.post('http://localhost:4941/api/v2/projects', JSON.stringify(project), {headers: {'x-authorization': localStorage.getItem("token")}})
@@ -127,9 +123,33 @@
                     } , function (error) {
                         console.log(error);
                     })
-            }
+            },
+            addReward: function () {
+                let reward = {
+                    "amount" : this.amount,
+                    "description": this.reward_description
+                };
+                let found = false;
+                for (var i = 0; i < this.rewards.length; i++ ){
+                    if (this.rewards[i].description == this.reward_description && this.rewards[i].amount === this.amount){
+                        found = true;
+                    }
+                }
 
-        }
+                if (found == false){
+                    this.rewards.push (reward)
+                }
+            },
+            deleteReward: function (reward) {
+                var index = this.rewards.indexOf(reward);
+                this.rewards.splice(index, 1);
+            },
+            editReward: function (reward) {
+                this.amount = reward.amount;
+                this.reward_description = reward.description;
+                this.deleteReward(reward);
+            },
+    }
     }
 </script>
 
