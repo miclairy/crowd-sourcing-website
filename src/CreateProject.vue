@@ -63,19 +63,6 @@
                 </v-layout>
             </v-flex>
 
-            <v-layout row>
-                <v-flex xs4>
-                    <v-subheader>Creators</v-subheader>
-                </v-flex>
-                <v-flex xs8>
-                    <v-text-field label="Username" :rules="[() => 'Username doesn\'t exist']" error ></v-text-field>
-                </v-flex>
-                <v-flex xs8>
-                    <v-btn class="pink" small top right fab>
-                        <v-icon>add</v-icon>
-                    </v-btn>
-                </v-flex>
-            </v-layout>
         </v-container>
 
 
