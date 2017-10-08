@@ -8,7 +8,7 @@
                 <v-layout row wrap>
                 <v-flex xs4 id="project" v-for="project in projects">
                     <v-card  >
-                        <v-card-media contain src="https://images.vice.com/vice/images/articles/meta/2014/12/30/tony-hawk-talks-about-the-rise-of-the-hoverboard-456-1419972535.jpeg?crop=1xw:1xh;center,center&resize=1050:*" width="200" height="250"/>
+                        <v-card-media contain v-bind:src="'http://localhost:4941/api/v2/projects/' + project.id + '/image'" width="200" height="250"/>
                         <v-card-title primary-title>
                             <div>
                                 <h3 class="headline mb-0"><router-link :to="{ name : 'project', params: { projectId: project.id} }">{{ project.title }} </router-link></h3>
@@ -43,7 +43,7 @@
                 errorFlag: false,
                 projects: [],
                 selected: {},
-                show: [],
+                show: []
             }
         },
         mounted: function () {

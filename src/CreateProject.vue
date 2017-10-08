@@ -52,6 +52,17 @@
                 </v-flex>
             </v-layout>
 
+            <v-flex>
+                <v-layout row>
+                    <form enctype="multipart/form-data" novalidate>
+                        <v-subheader>Upload images</v-subheader>
+                        <div id="preview">
+                            <input type="file" v-on:change="filesChange($event.target.files);" accept="image/*" class="input-file">
+                        </div>
+                    </form>
+                </v-layout>
+            </v-flex>
+
             <v-flex xs4 v-for="reward in rewards">
                 <v-layout row>
                         <p> {{reward.amount}} </p>
@@ -74,6 +85,7 @@
 
 <script>
     export default {
+
         data(){
             return {
                 title: "New house for Eeyore ",
@@ -83,7 +95,10 @@
                 creators: [],
                 rewards: [],
                 amount: 10,
-                reward_description: ""
+                reward_description: "",
+                uploadedFiles: [],
+                uploadError: null,
+                uploadFieldName: 'photos'
             }
         },
         methods : {
@@ -144,8 +159,27 @@
                 if (isNaN(cost)) {
                     return 'Must be a cost';
                 }
+            },
+            preview(file) {
+                if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
+                    var reader = new FileReader();
+
+                    reader.addEventListener("load", function () {
+                        var image = new Image();
+                        image.height = 100;
+                        image.title = file.name;
+                        image.src = this.result;
+                        document.querySelector('#preview').appendChild( image );
+                    }, false);
+
+                    reader.readAsDataURL(file);
+                }
+            },
+            filesChange(fileList) {
+                if (!fileList.length) return;
+                this.preview(fileList[0]);
             }
-    }
+        }
     }
 </script>
 
