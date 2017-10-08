@@ -31,7 +31,7 @@
                     <v-subheader>Target</v-subheader>
                 </v-flex>
                 <v-flex xs8>
-                    <v-text-field  v-model="target" label="Amount" value="10021.00" prefix="$"></v-text-field>
+                    <v-text-field  v-model="target" error :rules="[checkIfCost(target)]" label="Amount" value="10021.00" prefix="$"></v-text-field>
                 </v-flex>
             </v-layout>
 
@@ -40,7 +40,7 @@
                 <v-subheader>Rewards</v-subheader>
                 </v-flex>
                 <v-flex xs8>
-                    <v-text-field v-model="amount" label="Amount" value="10.00"></v-text-field>
+                    <v-text-field v-model="amount" label="Amount" error :rules="[checkIfCost(amount)]" value="10.00"></v-text-field>
                 </v-flex>
                 <v-flex xs8>
                     <v-text-field v-model="reward_description" label="Description"></v-text-field>
@@ -112,19 +112,23 @@
                     })
             },
             addReward: function () {
-                let reward = {
-                    "amount" : this.amount,
-                    "description": this.reward_description
-                };
-                let found = false;
-                for (var i = 0; i < this.rewards.length; i++ ){
-                    if (this.rewards[i].description == this.reward_description && this.rewards[i].amount === this.amount){
-                        found = true;
+                if (!isNaN(this.amount) && this.reward_description.trim().length > 0 && this.amount.trim().length > 0 ) {
+                    let reward = {
+                        "amount": this.amount,
+                        "description": this.reward_description
+                    };
+                    let found = false;
+                    for (var i = 0; i < this.rewards.length; i++) {
+                        if (this.rewards[i].description == this.reward_description && this.rewards[i].amount === this.amount) {
+                            found = true;
+                        }
                     }
-                }
 
-                if (found == false){
-                    this.rewards.push (reward)
+                    if (found == false) {
+                        this.rewards.push(reward)
+                    }
+                    this.amount = 0;
+                    this.reward_description = "";
                 }
             },
             deleteReward: function (reward) {
@@ -136,6 +140,11 @@
                 this.reward_description = reward.description;
                 this.deleteReward(reward);
             },
+            checkIfCost: function (cost) {
+                if (isNaN(cost)) {
+                    return 'Must be a cost';
+                }
+            }
     }
     }
 </script>
