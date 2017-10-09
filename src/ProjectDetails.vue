@@ -12,7 +12,14 @@
                 <h1> {{ selected.title }} </h1>
                 <h2> {{ selected.subtitle }} </h2>
                 <p> Target: ${{ selected.target }} </p>
-
+                <div class="progress" >
+                    <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="percentage"
+                         aria-valuemin="0" aria-valuemax="100" style="width:70%">
+                        {{ percentage }}%
+                    </div>
+                </div>
+                <p> {{ numberOfBackers }} people have backer so far </p>
+                <p> ${{ amountPledged }} toward the target </p>
                 <v-layout class="creators" row>
                     <p id="created"> Created </p>
                     <p class="creators" > {{ creationDate }} by </p>
@@ -28,15 +35,25 @@
             <v-flex xs6>
             <h2>About this project</h2>
             <p> {{ selected.description }} </p>
+                <h2> Backers </h2>
+                <div v-for="backer in selected.backers">
+                    <v-layout row>
+                        <h5> {{backer.username }}</h5>
+                        <p> gave {{ backer.amount }}</p>
+                    </v-layout>
+
+                </div>
             </v-flex>
 
 
             <v-flex xs5>
-            <h3> Rewards: </h3>
-                <v-card v-for="reward in selected.rewards">
+            <h2> Rewards </h2>
+                <div v-for="reward in selected.rewards">
+                <v-card >
                     <v-card-title primary-title><h4 class="headline mb-0">Pledge ${{ reward.amount }} or more</h4></v-card-title>
                 <v-card-text> and receive...  {{ reward.description }}</v-card-text>
                 </v-card>
+                </div>
             </v-flex>
             </v-layout>
 
@@ -58,6 +75,9 @@
                 errorFlag: false,
                 selected: {},
                 creationDate: "1/1/1111",
+                numberOfBackers: -1,
+                percentage: 0,
+                amountPledged : 0,
             }
         },
         mounted: function () {
@@ -77,6 +97,12 @@
                                 lastWeek: '[Last] dddd',
                                 sameElse: 'DD/MM/YYYY'
                             });
+                            this.numberOfBackers = response.data.backers.length;
+                            for (var i = 0; i < this.numberOfBackers; i += 1){
+                                this.amountPledged += this.selected.backers[i].amount
+                            }
+                            this.percentage = (this.amountPledged / this.selected.target) * 1000;
+
                         }, function (error) {
                             this.error = error;
                             this.errorFlag = true;
@@ -92,6 +118,15 @@
 </script>
 
 <style>
+
+    h1{
+        font-size: 4em;
+    }
+
+    h2{
+        font-size: 2em;
+    }
+
     .creators {
         margin-left: 5px;
         margin-right: 5px;
