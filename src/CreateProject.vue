@@ -168,6 +168,7 @@
                 if (isNaN(cost)) {
                     return 'Must be a cost';
                 }
+                return "";
             },
             preview(file) {
                 if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
