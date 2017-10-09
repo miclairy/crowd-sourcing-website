@@ -98,7 +98,8 @@
                 reward_description: "",
                 uploadedFiles: [],
                 uploadError: null,
-                uploadFieldName: 'photos'
+                uploadFieldName: 'photos',
+                image : ""
             }
         },
         methods : {
@@ -114,11 +115,19 @@
                     }],
                     rewards: this.rewards
                 };
-                console.log(JSON.stringify(project));
                 this.$http.post('http://localhost:4941/api/v2/projects', JSON.stringify(project), {headers: {'x-authorization': localStorage.getItem("token")}})
                     .then(function (response) {
                         if (response.status == 201){
                             alert("created " + this.title);
+                            console.log(response.body.id);
+                            console.log(this.image);
+                            this.$http.put('http://localhost:4941/api/v2/projects/' + response.body.id + '/image', this.image, {headers: {
+                                'x-authorization': localStorage.getItem("token"),
+                                'content-type' : "image/jpg"
+                            }})
+                                .then (function (response) {
+                                  console.log(response)
+                                })
                         } else {
                             console.log(response);
                         }
@@ -127,7 +136,7 @@
                     })
             },
             addReward: function () {
-                if (!isNaN(this.amount) && this.reward_description.trim().length > 0 && this.amount.trim().length > 0 ) {
+                if (!isNaN(this.amount) && this.reward_description.trim().length > 0) {
                     let reward = {
                         "amount": this.amount,
                         "description": this.reward_description
@@ -169,10 +178,12 @@
                         image.height = 100;
                         image.title = file.name;
                         image.src = this.result;
+                        this.image = this.result;
                         document.querySelector('#preview').appendChild( image );
                     }, false);
 
                     reader.readAsDataURL(file);
+
                 }
             },
             filesChange(fileList) {
