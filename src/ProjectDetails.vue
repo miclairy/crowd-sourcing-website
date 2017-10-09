@@ -3,34 +3,43 @@
         <div v-if="errorFlag" style="color: darkred;">
             {{ error }}
         </div>
-        <v-container id="project-big">
-            <br/>
-            <br/>
-            <h1> {{ selected.title }} </h1>
-            <h2> {{ selected.subtitle }} </h2>
-            <p> {{ selected.description }} </p>
-            <v-flex xs4 v-for="reward in selected.rewards">
-                <v-layout row>
+        <v-container fluid id="project-big">
+            <v-layout row>
+            <v-flex xs6>
+                <img v-bind:src="'http://localhost:4941/api/v2/projects/' + selected.id + '/image'"/>
+            </v-flex>
+            <v-flex xs6 >
+                <h1> {{ selected.title }} </h1>
+                <h2> {{ selected.subtitle }} </h2>
+                <p> Target: ${{ selected.target }} </p>
+
+                <v-layout class="creators" row>
                     <p id="created"> Created </p>
                     <p class="creators" > {{ creationDate }} by </p>
-                <div  v-for="creator in selected.creators">
-                    <p> {{ creator.username }} </p>
-                </div>
+                    <div  v-for="creator in selected.creators">
+                        <p> {{ creator.username }} </p>
+                    </div>
 
                 </v-layout>
+                <button class="button" type="button" v-on:click="pledge()">pledge</button>
             </v-flex>
-            <p> Rewards: </p>
+            </v-layout>
+            <v-layout row>
+            <v-flex xs6>
+            <h2>About this project</h2>
+            <p> {{ selected.description }} </p>
+            </v-flex>
 
-            <v-flex xs4 v-for="reward in selected.rewards">
-                <v-layout row>
-                <p>{{ reward.amount }}</p>
-                    <v-spacer></v-spacer>
-                <p>  {{ reward.description }}</p>
-                </v-layout>
+
+            <v-flex xs5>
+            <h3> Rewards: </h3>
+                <v-card v-for="reward in selected.rewards">
+                    <v-card-title primary-title><h4 class="headline mb-0">Pledge ${{ reward.amount }} or more</h4></v-card-title>
+                <v-card-text> and receive...  {{ reward.description }}</v-card-text>
+                </v-card>
             </v-flex>
-            <p> Target: {{ selected.target }} </p>
-            <v-card-media contain v-bind:src="'http://localhost:4941/api/v2/projects/' + selected.id + '/image'" width="200" height="250"/>
-            <button class="button" type="button" v-on:click="pledge()">pledge</button>
+            </v-layout>
+
 
 
         </v-container>
@@ -98,4 +107,12 @@
         box-sizing: border-box;
         font-size: 14px;
     }
+
+    img {
+        margin:auto;
+        max-width:100%;
+        max-height:100%;
+        display: block;
+    }
+
 </style>
