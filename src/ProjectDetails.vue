@@ -29,8 +29,6 @@
 
                 </v-layout>
                 <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#pledgeModal">Pledge</button>
-
-                <button class="button" type="button" v-on:click="pledge()">pledge</button>
             </v-flex>
             </v-layout>
             <v-layout row>
@@ -63,7 +61,7 @@
 
 
         <!-- Modal -->
-        <div id="pledgeModal" class="modal fade" role="dialog" tabindex="-1" aria-labelledby="pledgeModalLabel" aria-hidden="true">
+        <div id="pledgeModal" class="modal fade" role="dialog" tabindex="-1">
             <div class="modal-dialog" role="document">
 
                 <!-- Modal content-->
@@ -121,8 +119,8 @@
                 amountPledged : 0,
                 id : -1,
                 pledgeData: {
-                    id: localStorage.getItem("id"),
-                    amount: "",
+                    id: parseInt(localStorage.getItem("id")),
+                    amount: 0,
                     anonymous: false,
                     card: {
                         authToken: ""
@@ -161,8 +159,8 @@
                 }
             },
             pledge : function () {
-
-                this.$http.post('http://localhost:4941/api/v2/projects/' + this.id + "/", this.pledgeData,
+                this.pledgeData.amount = parseInt(this.pledgeData.amount);
+                this.$http.post('http://localhost:4941/api/v2/projects/' + this.id + "/pledge", JSON.stringify(this.pledgeData),
                     {headers: {'x-authorization': localStorage.getItem("token")}})
                     .then(function (response) {
                         console.log(response);
