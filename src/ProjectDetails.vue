@@ -28,6 +28,8 @@
                     </div>
 
                 </v-layout>
+                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#pledgeModal">Pledge</button>
+
                 <button class="button" type="button" v-on:click="pledge()">pledge</button>
             </v-flex>
             </v-layout>
@@ -57,9 +59,48 @@
             </v-flex>
             </v-layout>
 
-
-
         </v-container>
+
+
+        <!-- Modal -->
+        <div id="pledgeModal" class="modal fade" role="dialog" tabindex="-1" aria-labelledby="pledgeModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Modal Header</h4>
+                    </div>
+                    <div class="modal-body">
+                        <v-container>
+                            <v-layout row>
+                                <v-flex xs4>
+                                    <v-subheader>Amount</v-subheader>
+                                </v-flex>
+                                <v-flex xs8>
+                                    <v-text-field v-model="pledgeData.amount" prefix="$" ></v-text-field>
+                                </v-flex>
+                            </v-layout>
+                            <v-layout row>
+                                <v-flex xs4>
+                                    <v-subheader>Credit Card</v-subheader>
+                                </v-flex>
+                                <v-flex xs8>
+                                    <v-text-field v-model="pledgeData.card.authToken" ></v-text-field>
+                                </v-flex>
+                            </v-layout>
+                        </v-container>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="checkbox" v-model="pledgeData.anonymous" name="Anonymous" value="anonymous"> Anonymous
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="pledge()">Pledge</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 
 </template>
@@ -78,6 +119,15 @@
                 numberOfBackers: -1,
                 percentage: 0,
                 amountPledged : 0,
+                id : -1,
+                pledgeData: {
+                    id: localStorage.getItem("id"),
+                    amount: "",
+                    anonymous: false,
+                    card: {
+                        authToken: ""
+                    }
+                }
             }
         },
         mounted: function () {
@@ -85,6 +135,7 @@
         },
         methods: {
             getProject : function(id) {
+                this.id = id;
                 if (id != null) {
                     this.$http.get('http://localhost:4941/api/v2/projects/' + id)
                         .then(function (response) {
@@ -110,7 +161,15 @@
                 }
             },
             pledge : function () {
-                return true;
+
+                this.$http.post('http://localhost:4941/api/v2/projects/' + this.id + "/", this.pledgeData,
+                    {headers: {'x-authorization': localStorage.getItem("token")}})
+                    .then(function (response) {
+                        console.log(response);
+
+                    }, function (error) {
+                        console.log(error);
+                    })
             }
         }
     }
