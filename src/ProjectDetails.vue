@@ -36,13 +36,13 @@
             <h2>About this project</h2>
             <p> {{ selected.description }} </p>
                 <h2> Backers </h2>
-                <div v-for="backer in selected.backers">
+                <v-container v-for="backer in selected.backers">
                     <v-layout row>
                         <h5> {{backer.username }}</h5>
-                        <p> gave {{ backer.amount }}</p>
+                        <p> gave ${{ backer.amount }}</p>
                     </v-layout>
 
-                </div>
+                </v-container>
             </v-flex>
 
 
@@ -150,7 +150,7 @@
                             for (var i = 0; i < this.numberOfBackers; i += 1){
                                 this.amountPledged += this.selected.backers[i].amount
                             }
-                            this.percentage = (this.amountPledged / this.selected.target) * 1000;
+                            this.percentage = Math.round((this.amountPledged / this.selected.target) * 1000);
 
                         }, function (error) {
                             this.error = error;
