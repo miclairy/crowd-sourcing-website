@@ -29,7 +29,8 @@
 
                 </v-layout>
                 <div v-if="!owner"><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#pledgeModal">Pledge</button></div>
-                <div v-else><button type="button" class="btn btn-info btn-lg" v-on:click="closeProject()">Close Project</button></div>
+                <div v-if="owner && !selected.open"><p>Project is closed</p></div>
+                <div v-if="owner && selected.open"><button type="button" class="btn btn-info btn-lg" v-on:click="closeProject()">close project</button></div>
             </v-flex>
             </v-layout>
             <v-layout row>
@@ -192,6 +193,17 @@
                     }, function (error) {
                         console.log(error);
                     })
+            },
+            closeProject : function() {
+                if (confirm("Are you sure you want to close the project?") == true) {
+                    this.$http.put('http://localhost:4941/api/v2/projects/' + this.id , JSON.stringify({"open": false}),
+                        {headers: {'x-authorization': localStorage.getItem("token")}})
+                        .then (function (response) {
+                            this.getProject(this.id);
+                        })
+
+                }
+
             }
         }
     }
