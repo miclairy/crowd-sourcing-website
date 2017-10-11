@@ -14,11 +14,11 @@
                 <p> Target: ${{ selected.target }} </p>
                 <div class="progress" >
                     <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="percentage"
-                         aria-valuemin="0" aria-valuemax="100" style="width:70%">
+                         aria-valuemin="0" aria-valuemax="100" :style="'width:'+percentage+'%'">
                         {{ percentage }}%
                     </div>
                 </div>
-                <p> {{ numberOfBackers }} people have backer so far </p>
+                <p> {{ numberOfBackers }} backers </p>
                 <p> ${{ amountPledged }} toward the target </p>
                 <v-layout class="creators" row>
                     <p id="created"> Created </p>
@@ -33,16 +33,19 @@
             </v-layout>
             <v-layout row>
             <v-flex xs6>
-            <h2>About this project</h2>
-            <p> {{ selected.description }} </p>
-                <h2> Backers </h2>
-                <v-container v-for="backer in selected.backers">
-                    <v-layout row>
-                        <h5> {{backer.username }}</h5>
-                        <p> gave ${{ backer.amount }}</p>
-                    </v-layout>
+                <h2>About this project</h2>
+                <p> {{ selected.description }} </p>
 
+                <h2> Backers </h2>
+                <v-container>
+                <v-layout row v-if="anonymousPledged > 0">
+                    <p> Anonymous backers gave ${{anonymousPledged }}</p>
+                </v-layout>
                 </v-container>
+                <v-container v-for="backer in selected.backers" v-if="backer.username != 'anonymous'">
+                        <p>{{backer.username }} gave ${{ backer.amount }}</p>
+                </v-container>
+
             </v-flex>
 
 
@@ -117,6 +120,7 @@
                 numberOfBackers: -1,
                 percentage: 0,
                 amountPledged : 0,
+                anonymousPledged: 0,
                 id : -1,
                 pledgeData: {
                     id: parseInt(localStorage.getItem("id")),
@@ -134,6 +138,8 @@
         methods: {
             getProject : function(id) {
                 this.id = id;
+                this.amountPledged = 0;
+                this.anonymousPledged = 0;
                 if (id != null) {
                     this.$http.get('http://localhost:4941/api/v2/projects/' + id)
                         .then(function (response) {
@@ -146,10 +152,19 @@
                                 lastWeek: '[Last] dddd',
                                 sameElse: 'DD/MM/YYYY'
                             });
-                            this.numberOfBackers = response.data.backers.length;
-                            for (var i = 0; i < this.numberOfBackers; i += 1){
-                                this.amountPledged += this.selected.backers[i].amount
+                            this.numberOfBackers = 0;
+                            var usernames = new Set();
+                            for (var i = 0; i < response.data.backers.length; i += 1){
+                                if (! usernames.has(this.selected.backers[i].username)){
+                                    usernames.add(this.selected.backers[i].username);
+                                    this.numberOfBackers += 1;
+                                }
+                                this.amountPledged += this.selected.backers[i].amount;
+                                if (this.selected.backers[i].username == "anonymous"){
+                                    this.anonymousPledged += this.selected.backers[i].amount;
+                                }
                             }
+
                             this.percentage = Math.round((this.amountPledged / this.selected.target) * 1000);
 
                         }, function (error) {
@@ -160,11 +175,12 @@
             },
             pledge : function () {
                 this.pledgeData.amount = parseInt(this.pledgeData.amount);
+                console.log(this.pledgeData.anonymous);
                 this.$http.post('http://localhost:4941/api/v2/projects/' + this.id + "/pledge", JSON.stringify(this.pledgeData),
                     {headers: {'x-authorization': localStorage.getItem("token")}})
                     .then(function (response) {
                         console.log(response);
-
+                        this.getProject(this.id);
                     }, function (error) {
                         console.log(error);
                     })
