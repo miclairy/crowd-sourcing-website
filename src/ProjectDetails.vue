@@ -36,13 +36,13 @@
                 <h2>About this project</h2>
                 <p> {{ selected.description }} </p>
 
-                <h2> Backers </h2>
+                <h2> Pledges </h2>
                 <v-container>
                 <v-layout row v-if="anonymousPledged > 0">
                     <p> Anonymous backers gave ${{anonymousPledged }}</p>
                 </v-layout>
                 </v-container>
-                <v-container v-for="backer in selected.backers" v-if="backer.username != 'anonymous'">
+                <v-container v-for="backer in selected.backers.slice(0, 5)" v-if="backer.username != 'anonymous'">
                         <p>{{backer.username }} gave ${{ backer.amount }}</p>
                 </v-container>
 
