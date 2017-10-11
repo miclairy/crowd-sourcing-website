@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="loaded">
         <div v-if="errorFlag" style="color: darkred;">
             {{ error }}
         </div>
@@ -125,6 +125,7 @@
                 anonymousPledged: 0,
                 id : -1,
                 owner : false,
+                loaded : false,
                 pledgeData: {
                     id: parseInt(localStorage.getItem("id")),
                     amount: 0,
@@ -175,6 +176,7 @@
                             }
 
                             this.percentage = Math.round((this.amountPledged / this.selected.target) * 1000);
+                            this.loaded = true;
 
                         }, function (error) {
                             this.error = error;
