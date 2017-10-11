@@ -15,12 +15,6 @@ Vue.use(Vuetify);
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(Vuex);
-Vue.http.options.emulateJSON = true;
-Vue.http.headers.common['Content-Type'] = 'application/json';
-// import('./node_modules/vuetify/dist/vuetify.min.css') // Ensure you are using css-loader
-
-// localStorage.setItem("id", null);
-// localStorage.setItem("token", null);
 
 const routes = [
     {

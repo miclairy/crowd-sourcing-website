@@ -56,9 +56,8 @@
                 <v-layout row>
                     <form enctype="multipart/form-data" novalidate>
                         <v-subheader>Upload images</v-subheader>
-                        <div id="preview">
-                            <input type="file" v-on:change="filesChange($event.target.files);" accept="image/*" class="input-file">
-                        </div>
+                            <input type="file" v-on:change="preview($event.target.files[0]);" accept="image/*" class="input-file">
+                        <img src="" id="preview"/>
                     </form>
                 </v-layout>
             </v-flex>
@@ -109,7 +108,7 @@
                     "title": this.title,
                     "subtitle": this.subtitle,
                     "description": this.description,
-                    "target": this.target,
+                    "target": parseInt(this.target),
                     creators: [ {
                         "id" : parseInt(localStorage.getItem('id'))
                     }],
@@ -123,7 +122,7 @@
                             console.log(this.image);
                             this.$http.put('http://localhost:4941/api/v2/projects/' + response.body.id + '/image', this.image, {headers: {
                                 'x-authorization': localStorage.getItem("token"),
-                                'content-type' : "image/jpg"
+                                'content-type' : this.image.type
                             }})
                                 .then (function (response) {
                                   console.log(response)
@@ -138,7 +137,7 @@
             addReward: function () {
                 if (!isNaN(this.amount) && this.reward_description.trim().length > 0) {
                     let reward = {
-                        "amount": this.amount,
+                        "amount": parseInt(this.amount),
                         "description": this.reward_description
                     };
                     let found = false;
@@ -171,26 +170,24 @@
                 return "";
             },
             preview(file) {
+                this.image = file;
+                var preview = document.querySelector('img'); //selects the query named img
+
                 if ( /\.(jpe?g|png|gif)$/i.test(file.name) ) {
-                    var reader = new FileReader();
+                var reader  = new FileReader();
 
-                    reader.addEventListener("load", function () {
-                        var image = new Image();
-                        image.height = 100;
-                        image.title = file.name;
-                        image.src = this.result;
-                        this.image = this.result;
-                        document.querySelector('#preview').appendChild( image );
-                    }, false);
+                    reader.onloadend = function () {
+                        preview.src = reader.result;
+                    };
 
-                    reader.readAsDataURL(file);
+                    if (file) {
+                        reader.readAsDataURL(file); //reads the data as a URL
+                    } else {
+                        preview.src = "";
+                    }
 
                 }
             },
-            filesChange(fileList) {
-                if (!fileList.length) return;
-                this.preview(fileList[0]);
-            }
         }
     }
 </script>
