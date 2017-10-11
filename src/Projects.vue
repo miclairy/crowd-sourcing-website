@@ -4,29 +4,15 @@
             {{ error }}
         </div>
 
-            <v-container grid-list-xs id="projects" >
+            <v-container grid-list-xs fluid id="projects"  >
                 <v-layout row wrap>
                 <v-flex xs4 id="project" v-for="project in projects">
-                    <v-card  >
-                        <v-card-media contain v-bind:src="'http://localhost:4941/api/v2/projects/' + project.id + '/image'" width="200" height="250"/>
+                    <v-card  class="v-card" height="100%">
+                        <v-card-media contain v-bind:src="'http://localhost:4941/api/v2/projects/' + project.id + '/image'" height="250"/>
                         <v-card-title primary-title>
-                            <div>
-                                <h3 class="headline mb-0"><router-link :to="{ name : 'project', params: { projectId: project.id} }">{{ project.title }} </router-link></h3>
-                                <div> {{project.subtitle }} </div>
-                            </div>
+                            <h3 class="headline mb-0"><router-link :to="{ name : 'project', params: { projectId: project.id} }">{{ project.title }} </router-link></h3>
+                            <div> {{project.subtitle }} </div>
                         </v-card-title>
-                        <v-card-actions>
-
-                            <v-spacer></v-spacer>
-                            <v-btn icon @click.native="show[project.id - 1] = !show[project.id - 1]">
-                                <v-icon>{{ show[project.id - 1] ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
-                            </v-btn>
-                        </v-card-actions>
-                        <v-slide-y-transition>
-                            <v-card-text v-show="show[project.id - 1]">
-                                I'm a thing. But, like most politicians, he promised more than he could deliver. You won't have time for sleeping, soldier, not with all the bed making you'll be doing. Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk! You're going to do his laundry? I've got to find a way to escape.
-                            </v-card-text>
-                        </v-slide-y-transition>
                     </v-card>
                 </v-flex>
                 </v-layout>
@@ -76,3 +62,6 @@
     }
 
 </script>
+
+<style>
+</style>

@@ -28,7 +28,8 @@
                     </div>
 
                 </v-layout>
-                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#pledgeModal">Pledge</button>
+                <div v-if="!owner"><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#pledgeModal">Pledge</button></div>
+                <div v-else><button type="button" class="btn btn-info btn-lg" v-on:click="closeProject()">Close Project</button></div>
             </v-flex>
             </v-layout>
             <v-layout row>
@@ -122,6 +123,7 @@
                 amountPledged : 0,
                 anonymousPledged: 0,
                 id : -1,
+                owner : false,
                 pledgeData: {
                     id: parseInt(localStorage.getItem("id")),
                     amount: 0,
@@ -162,6 +164,12 @@
                                 this.amountPledged += this.selected.backers[i].amount;
                                 if (this.selected.backers[i].username == "anonymous"){
                                     this.anonymousPledged += this.selected.backers[i].amount;
+                                }
+                            }
+
+                            for (var i = 0; i < response.data.creators.length; i += 1){
+                                if (localStorage.getItem('id') == response.data.creators[i].id){
+                                    this.owner = true;
                                 }
                             }
 
