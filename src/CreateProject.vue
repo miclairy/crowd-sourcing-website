@@ -34,6 +34,13 @@
                     <v-text-field  v-model="target" error :rules="[checkIfCost(target)]" label="Amount" value="10021.00" prefix="$"></v-text-field>
                 </v-flex>
             </v-layout>
+            <v-flex>
+                <v-layout row>
+                        <v-subheader>Upload images</v-subheader>
+                        <input type="file" v-on:change="preview($event.target.files[0]);" accept="image/*" class="input-file">
+                        <img src="" id="preview"/>
+                </v-layout>
+            </v-flex>
 
             <v-layout row>
                 <v-flex xs4>
@@ -52,15 +59,7 @@
                 </v-flex>
             </v-layout>
 
-            <v-flex>
-                <v-layout row>
-                    <form enctype="multipart/form-data" novalidate>
-                        <v-subheader>Upload images</v-subheader>
-                            <input type="file" v-on:change="preview($event.target.files[0]);" accept="image/*" class="input-file">
-                        <img src="" id="preview"/>
-                    </form>
-                </v-layout>
-            </v-flex>
+
 
             <v-flex xs4 v-for="reward in rewards">
                 <v-layout row>

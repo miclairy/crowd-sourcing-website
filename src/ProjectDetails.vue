@@ -4,9 +4,13 @@
             {{ error }}
         </div>
         <v-container fluid id="project-big">
+            <v-flex xs8>
+                <label v-if="owner" id="editImage" for="changeImage"><v-icon dark>edit</v-icon></label>
+                <input id="changeImage" name="changeImage" v-if="owner" type="file" v-on:change="changeImage($event.target.files[0]);" accept="image/*" class="inputFile">
+            </v-flex>
             <v-layout row>
             <v-flex xs6>
-                <img v-bind:src="'http://localhost:4941/api/v2/projects/' + selected.id + '/image'"/>
+                <img  v-bind:src="imageSrc"/>
             </v-flex>
             <v-flex xs6 >
                 <h1> {{ selected.title }} </h1>
@@ -30,7 +34,7 @@
                 </v-layout>
                 <div v-if="!owner"><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#pledgeModal">Pledge</button></div>
                 <div v-if="owner && !selected.open"><p>Project is closed</p></div>
-                <div v-if="owner && selected.open"><button type="button" class="btn btn-info btn-lg" v-on:click="closeProject()">close project</button></div>
+                <div v-if="owner && selected.open"><button type="button" class="btn btn-danger btn-lg" v-on:click="closeProject()">close project</button></div>
             </v-flex>
             </v-layout>
             <v-layout row>
@@ -133,7 +137,8 @@
                     card: {
                         authToken: ""
                     }
-                }
+                },
+                imageSrc: ""
             }
         },
         mounted: function () {
@@ -142,6 +147,7 @@
         methods: {
             getProject : function(id) {
                 this.id = id;
+                this.imageSrc = 'http://localhost:4941/api/v2/projects/' + this.id + '/image';
                 this.amountPledged = 0;
                 this.anonymousPledged = 0;
                 if (id != null) {
@@ -206,6 +212,20 @@
 
                 }
 
+            },
+            changeImage : function (image) {
+                this.$http.put('http://localhost:4941/api/v2/projects/' + this.id + '/image', image, {headers: {
+                    'x-authorization': localStorage.getItem("token"),
+                    'content-type' : image.type
+                }})
+                .then(function (response) {
+                    console.log(response);
+                    this.imageSrc = 'http://localhost:4941/api/v2/projects/' + this.id + '/image?' + moment();
+
+
+                }, function (error) {
+                    console.log(error);
+                })
             }
         }
     }
@@ -243,6 +263,32 @@
         max-width:100%;
         max-height:100%;
         display: block;
+    }
+
+    .inputFile {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+    #editImage {
+        font-size: 1.25em;
+        font-weight: 700;
+        color: white;
+        background-color: #6f14a1;
+        display: inline-block;
+    }
+
+    #editImage:focus,
+    #editImage:hover {
+        background-color: #9374a6;
+    }
+
+    #editImage {
+        cursor: pointer; /* "hand" cursor */
     }
 
 </style>
