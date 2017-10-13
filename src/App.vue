@@ -7,7 +7,9 @@
         <v-toolbar-items class="hidden-sm-and-down">
           <v-btn flat :to="{ name:'projects'}">Projects</v-btn>
           <v-btn flat :to="{ path:'/create'}">Create</v-btn>
-          <v-btn flat v-if="! isLoggedIn()" :to="{ path: '/'}">{{ username }}</v-btn>
+          <!--<v-btn flat v-if="! isLoggedIn()"><a href="#" title="Header" data-toggle="popover" data-placement="bottom" data-content="Content">{{ username }}</a></v-btn>-->
+          <a v-if="! isLoggedIn()" href="#" data-toggle="popover" data-placement="bottom" data-content="Content">{{ username }}</a>
+
 
           <v-btn v-if="isLoggedIn()" flat :to="{ path:'/signup'}">Sign Up</v-btn>
             <v-btn v-if="isLoggedIn()" flat :to="{ path: '/login'}">Login</v-btn>
@@ -20,6 +22,9 @@
 </template>
 
 <script>
+    $(document).ready(function(){
+        $('[data-toggle="popover"]').popover();
+    });
 export default {
     name: 'App',
     data(){

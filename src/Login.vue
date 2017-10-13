@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-card width="60">
+        <v-card v-if="isLoggedIn()">
             <h3>Reach your Dreams</h3>
             <form >
                 <input v-model="username" class='login' type="text" placeholder="username"/>
@@ -11,6 +11,10 @@
                 </div>
                 <p>Not registered? <router-link :to="{ path:'/signup'}">Create an account</router-link></p>
             </form>
+        </v-card>
+
+        <v-card v-if="!isLoggedIn()">
+            <h2>Please log out to log in as a different user</h2>
         </v-card>
     </v-container>
 </template>
@@ -57,7 +61,13 @@
         },
         methods: {
             login : function () {
-                this.$http.post('http://localhost:4941/api/v2/users/login?username=' + this.username + "&password=" + this.password)
+                let url = "";
+                if (/@/g.test(this.username)){
+                    url = 'http://localhost:4941/api/v2/users/login?email=' + this.username + "&password=" + this.password
+                } else {
+                    url = 'http://localhost:4941/api/v2/users/login?username=' + this.username + "&password=" + this.password
+                }
+                this.$http.post(url)
                     .then(function (response) {
                         if (response.status == 200) {
                             this.errorFlag = false;
@@ -76,7 +86,10 @@
                     this.error = error;
                     this.errorFlag = true;
                 });
-            }
+            }, isLoggedIn : function () {
+                let isUser = localStorage.getItem("id") == "null" || localStorage.getItem("id") == 'undefined' || localStorage.getItem('id') == null ;
+                return isUser;
+            },
         }
     }
 

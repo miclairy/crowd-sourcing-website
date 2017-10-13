@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-card width="60">
+        <v-card v-if="isLoggedIn()">
             <h3>Access your Dreams</h3>
             <form >
                 <input v-model="username" class='register' type="text" placeholder="username"/>
@@ -13,6 +13,10 @@
                 </div>
                 <p>Already registered? <router-link :to="{ path: '/login'}">Login</router-link></p>
             </form>
+        </v-card>
+
+        <v-card v-if="!isLoggedIn()">
+            <h2>Please log out to sign up as a new user</h2>
         </v-card>
     </v-container>
 </template>
@@ -62,6 +66,7 @@
         methods: {
             signUp : function () {
                 this.error = "";
+                this.errorFlag = false;
                 let userData = {
                     "username": this.username,
                     "email": this.email,
@@ -72,8 +77,8 @@
                     this.error += "Username can not have spaces\n";
                     this.errorFlag = true;
                 }
-                if (this.username.length <= 0 || this.password.length <= 0 || this.email.length <= 0 || this.location <= 0) {
-                    this.error += "All fields are compulsory\n";
+                if (this.username.length <= 0 || this.password.length <= 0 || this.email.length <= 0 ) {
+                    this.error += "Password and email and username are compulsory\n";
                     this.errorFlag = true;
                 }
                 if (this.errorFlag == false) {
@@ -86,7 +91,8 @@
                                 this.errorFlag = true;
                             }
                         }, function (error) {
-                            this.error += "All fields are compulsory/n";
+                            console.log(error);
+                            this.error += "Already used email or username";
                             this.errorFlag = true;
                         });
                 }
@@ -111,7 +117,10 @@
                         this.error += "Invalid Data Entered";
                         this.errorFlag = true;
                     });
-            }
+            }, isLoggedIn : function () {
+                let isUser = localStorage.getItem("id") == "null" || localStorage.getItem("id") == 'undefined' || localStorage.getItem('id') == null ;
+                return isUser;
+            },
         }
     }
 
