@@ -7,7 +7,7 @@
         <v-toolbar-items class="hidden-sm-and-down">
           <v-btn flat :to="{ name:'projects'}">Projects</v-btn>
           <v-btn flat :to="{ path:'/create'}">Create</v-btn>
-          <v-btn flat>{{username}}</v-btn>
+          <v-btn v-if="!isLoggedIn()" flat>{{username}}</v-btn>
           <v-btn v-if="isLoggedIn()" flat :to="{ path:'/signup'}">Sign Up</v-btn>
             <v-btn v-if="isLoggedIn()" flat :to="{ path: '/login'}">Login</v-btn>
           <v-btn v-else flat v-on:click="logout()">Log out</v-btn>

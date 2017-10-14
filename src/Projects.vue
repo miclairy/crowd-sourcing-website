@@ -20,8 +20,8 @@
 
             </v-list>
         </v-menu>
-
-            <v-container grid-list-xs fluid id="projects"  >
+        <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+            <v-container grid-list-xs fluid id="projects">
                 <v-layout row wrap>
                 <v-flex xs4 id="project" v-for="project in projects" v-if="project.open">
                     <v-card  class="v-card" height="100%">
@@ -35,11 +35,13 @@
                     <h3 v-if="projects.length <= 0"> There are no projects for this filter</h3>
                 </v-layout>
             </v-container>
+        </div>
 
         </div>
 </template>
 
 <script>
+//    $("v-card-media").lazyLoadXT();
     export default {
         data(){
             return {
@@ -47,6 +49,9 @@
                 errorFlag: false,
                 projects: [],
                 selected: {},
+                busy: false,
+                count: 0,
+                allLoaded: false
             }
         },
         mounted: function () {
@@ -55,9 +60,16 @@
         methods: {
             getProjects: function () {
                 console.log(localStorage.getItem("id"));
-                this.$http.get('http://127.0.0.1:4941/api/v2/projects/?open=true')
+                this.$http.get('http://127.0.0.1:4941/api/v2/projects/?open=true&startIndex=' + this.count + "&count=6")
                     .then(function (response) {
-                        this.projects = response.data;
+                        if (response.data.length > 0) {
+                            this.projects = this.projects.concat(response.data);
+                            this.count += 6;
+                            this.allLoaded = false;
+                        } else {
+                            this.allLoaded = true;
+                        }
+                        this.busy = false;
                     }, function (error) {
                         this.error = error;
                         this.errorFlag = true;
@@ -90,6 +102,15 @@
                         this.error = error;
                         this.errorFlag = true;
                     });
+            },
+            loadMore : function () {
+                console.log("Loading more");
+                if (!this.allLoaded) {
+                    this.busy = true;
+                    this.getProjects();
+                }
+
+
             }
         }
     }

@@ -10,11 +10,14 @@ import ProjectDetails from './ProjectDetails.vue';
 import Login from './Login.vue'
 import SignUp from './SignUp.vue'
 import CreateProject from './CreateProject.vue'
+import infiniteScroll from 'vue-infinite-scroll'
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(Vuex);
+Vue.use(infiniteScroll);
+
 
 const routes = [
     {
