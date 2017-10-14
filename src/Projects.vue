@@ -7,7 +7,7 @@
             <v-btn slot="activator" flat>
                 Filter <v-icon>arrow_drop_down</v-icon>
             </v-btn>
-            <v-list>
+            <v-list class="menuOpen">
                 <v-list-tile @click="getProjects()">
                     <v-list-tile-title>All</v-list-tile-title>
                 </v-list-tile>
@@ -32,6 +32,7 @@
                         </v-card-title>
                     </v-card>
                 </v-flex>
+                    <h3 v-if="projects.length <= 0"> There are no projects for this filter</h3>
                 </v-layout>
             </v-container>
 
@@ -96,4 +97,7 @@
 </script>
 
 <style>
+    .menuOpen {
+        background-color: snow;
+    }
 </style>
