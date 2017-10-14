@@ -3,6 +3,23 @@
         <div v-if="errorFlag" style="color: darkred;">
             {{ error }}
         </div>
+        <v-menu open-on-hover>
+            <v-btn slot="activator" flat>
+                Filter <v-icon>arrow_drop_down</v-icon>
+            </v-btn>
+            <v-list>
+                <v-list-tile @click="getProjects()">
+                    <v-list-tile-title>All</v-list-tile-title>
+                </v-list-tile>
+                <v-list-tile @click="createdFilter()">
+                    <v-list-tile-title>Created</v-list-tile-title>
+                </v-list-tile>
+                <v-list-tile @click="backedFilter()">
+                    <v-list-tile-title>Backed</v-list-tile-title>
+                </v-list-tile>
+
+            </v-list>
+        </v-menu>
 
             <v-container grid-list-xs fluid id="projects"  >
                 <v-layout row wrap>
@@ -37,7 +54,7 @@
         methods: {
             getProjects: function () {
                 console.log(localStorage.getItem("id"));
-                this.$http.get('http://localhost:4941/api/v2/projects')
+                this.$http.get('http://127.0.0.1:4941/api/v2/projects/?open=true')
                     .then(function (response) {
                         this.projects = response.data;
                     }, function (error) {
@@ -54,6 +71,24 @@
                         this.errorFlag = true;
                     });
 
+            },
+            createdFilter : function () {
+                this.$http.get('http://127.0.0.1:4941/api/v2/projects/?open=true&creator=' + localStorage.getItem('id'))
+                    .then(function (response) {
+                        this.projects = response.data;
+                    }, function (error) {
+                        this.error = error;
+                        this.errorFlag = true;
+                    });
+            },
+            backedFilter : function () {
+                this.$http.get('http://127.0.0.1:4941/api/v2/projects/?open=true&backer=' + localStorage.getItem('id'))
+                    .then(function (response) {
+                        this.projects = response.data;
+                    }, function (error) {
+                        this.error = error;
+                        this.errorFlag = true;
+                    });
             }
         }
     }

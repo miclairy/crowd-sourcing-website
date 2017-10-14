@@ -7,8 +7,18 @@
         <v-toolbar-items class="hidden-sm-and-down">
           <v-btn flat :to="{ name:'projects'}">Projects</v-btn>
           <v-btn flat :to="{ path:'/create'}">Create</v-btn>
+          <v-menu open-on-hover>
+            <v-btn slot="activator" flat>
+              {{username}} <v-icon>arrow_drop_down</v-icon>
+            </v-btn>
+            <v-list>
+              <v-list-tile v-for="item in items" :key="item" @click="">
+                <v-list-tile-title v-text="item"></v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+          </v-menu>
           <!--<v-btn flat v-if="! isLoggedIn()"><a href="#" title="Header" data-toggle="popover" data-placement="bottom" data-content="Content">{{ username }}</a></v-btn>-->
-          <a v-if="! isLoggedIn()" href="#" data-toggle="popover" data-placement="bottom" data-content="Content">{{ username }}</a>
+          <!--<a v-if="! isLoggedIn()" href="#" data-toggle="popover" data-trigger="focus" data-placement="bottom" data-content="Content">{{ username }}</a>-->
 
 
           <v-btn v-if="isLoggedIn()" flat :to="{ path:'/signup'}">Sign Up</v-btn>
@@ -17,19 +27,23 @@
 
         </v-toolbar-items>
       </v-toolbar>
+
+
     <router-view></router-view>
+
+
   </div>
 </template>
 
 <script>
-    $(document).ready(function(){
-        $('[data-toggle="popover"]').popover();
-    });
 export default {
     name: 'App',
     data(){
         return {
-            username : ""
+            username : "",
+            items: [
+                "Created Projects", "Backed Projects"
+            ]
         }
     },
     methods : {
