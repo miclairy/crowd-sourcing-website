@@ -21,9 +21,9 @@
             </v-list>
         </v-menu>
         <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
-            <v-container grid-list-xs fluid id="projects">
+            <v-container grid-list-lg fluid id="projects">
                 <v-layout row wrap>
-                <v-flex xs4 id="project" v-for="project in projects" v-if="project.open">
+                <v-flex lg4 id="project" v-for="project in projects" v-if="project.open">
                     <v-card  class="v-card" height="100%">
                         <router-link :to="{ name : 'project', params: { projectId: project.id} }">
                             <v-card-media contain v-bind:src="'http://localhost:4941/api/v2/projects/' + project.id + '/image'" height="250"/>

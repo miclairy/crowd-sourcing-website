@@ -3,7 +3,7 @@
       <v-toolbar class="light dense">
         <v-toolbar-title> Dream Starter </v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-toolbar-side-icon class="hidden-md-and-up"></v-toolbar-side-icon>
+        <v-toolbar-side-icon  @click.stop="drawer = !drawer" class="hidden-md-and-up"></v-toolbar-side-icon>
         <v-toolbar-items class="hidden-sm-and-down">
           <v-btn flat :to="{ name:'projects'}">Projects</v-btn>
           <v-btn flat :to="{ path:'/create'}">Create</v-btn>
@@ -15,6 +15,55 @@
         </v-toolbar-items>
       </v-toolbar>
 
+    <v-navigation-drawer temporary v-model="drawer" light absolute>
+      <v-list class="pa-1">
+        <v-list-tile>
+          <v-list-tile-content>
+            <v-list-tile-title>Dream starter</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+      <v-list class="pt-0" dense>
+        <v-divider></v-divider>
+        <v-list-tile :to="{ name:'projects'}">
+          <v-list-tile-content>
+            <v-list-tile-title>Projects</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-divider></v-divider>
+        <v-list-tile :to="{ path:'/create'}">
+          <v-list-tile-content>
+            <v-list-tile-title>Create</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-divider></v-divider>
+        <v-list-tile v-if="!isLoggedIn()">
+          <v-list-tile-content>
+            <v-list-tile-title>Hello, {{ username }}</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-divider></v-divider>
+        <v-list-tile v-if="isLoggedIn()" :to="{ path:'/signup'}">
+          <v-list-tile-content>
+            <v-list-tile-title>Sign Up</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-divider></v-divider>
+        <v-list-tile v-if="isLoggedIn()" :to="{ path:'/login'}">
+          <v-list-tile-content>
+            <v-list-tile-title>Login</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <v-divider></v-divider>
+        <v-list-tile v-if="!isLoggedIn()" v-on:click="logout()">
+          <v-list-tile-content>
+            <v-list-tile-title>Log out</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+      </v-list>
+
+
+    </v-navigation-drawer>
 
     <router-view></router-view>
 
@@ -28,6 +77,7 @@ export default {
     data(){
         return {
             username : "",
+            drawer: false
         }
     },
     methods : {
