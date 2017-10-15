@@ -1,18 +1,43 @@
 <template>
     <v-container>
-        <v-card v-if="isLoggedIn()">
+        <v-card v-if="isLoggedIn()" class="center">
             <h3>Access your Dreams</h3>
-            <form >
-                <input v-model="username" class='register' type="text" placeholder="username"/>
-                <input v-model="email" class='register' type="email" placeholder="email"/>
-                <input v-model="location" class='register' type="text" placeholder="location"/>
-                <input v-model="password" class='register' type="password" placeholder="password"/>
-                <button class="btnregister" type="button" v-on:click="signUp()">Sign Up</button>
+
+            <v-form >
+                <v-text-field
+                        label="Username"
+                        v-model="username"
+                        :rules="nameRules"
+                        required
+                        class="text"
+                ></v-text-field>
+                <v-text-field
+                        label="Email"
+                        v-model="email"
+                        :rules="emailRules"
+                        required
+                        class="text"
+                ></v-text-field>
+                <v-text-field
+                        label="Location"
+                        v-model="location"
+                        class="text"
+                ></v-text-field>
+                <v-text-field
+                    label="Password"
+                    v-model="password"
+                    :rules="passwordRules"
+                    required
+                    :type="hidden ? 'password' : 'text'"
+                    class="text"
+            ></v-text-field>
                 <div v-if="errorFlag" style="color: darkred;">
-                    <p> {{ error }}</p>
+                    <p>{{ error }}</p>
                 </div>
+                <v-btn class="btnLogin green" v-on:click="signUp()">Sign Up</v-btn>
                 <p>Already registered? <router-link :to="{ path: '/login'}">Login</router-link></p>
-            </form>
+
+            </v-form>
         </v-card>
 
         <v-card v-if="!isLoggedIn()">
@@ -22,6 +47,19 @@
 </template>
 
 <style>
+
+    .center{
+        justify-content: center;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .text {
+        max-width: 550px;
+        margin-left: 25px;
+    }
+
     .register {
         outline: 0;
         background: #f2f2f2;
@@ -60,7 +98,18 @@
                 username: "",
                 password: "",
                 email: "",
-                location: ""
+                location: "",
+                nameRules: [
+                    (v) => !!v || 'Name is required',
+                ],
+                passwordRules: [
+                    (v) => !!v || 'Password is required',
+                ],
+                hidden: true,
+                emailRules: [
+                    (v) => !!v || 'E-mail is required',
+                    (v) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+                ]
             }
         },
         methods: {

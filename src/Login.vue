@@ -18,6 +18,7 @@
                         :rules="passwordRules"
                         required
                         class="text"
+                        :type="hidden? 'password' : 'text'"
                 ></v-text-field>
              <div v-if="errorFlag" style="color: darkred;">
                  <p>Incorrect Username or Password</p>
@@ -71,6 +72,7 @@
                 username: "",
                 password: "",
                 valid: false,
+                hidden: true,
                 nameRules: [
                     (v) => !!v || 'Name is required',
                 ],
