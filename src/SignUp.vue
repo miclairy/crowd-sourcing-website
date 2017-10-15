@@ -127,7 +127,11 @@
                     this.errorFlag = true;
                 }
                 if (this.username.length <= 0 || this.password.length <= 0 || this.email.length <= 0 ) {
-                    this.error += "Password and email and username are compulsory\n";
+                    this.error += "Password and email and username are required\n";
+                    this.errorFlag = true;
+                }
+                if (! /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.email)){
+                    this.error += "Email must be valid\n";
                     this.errorFlag = true;
                 }
                 if (this.errorFlag == false) {
