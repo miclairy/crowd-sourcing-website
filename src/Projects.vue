@@ -3,12 +3,12 @@
         <div v-if="errorFlag" style="color: darkred;">
             {{ error }}
         </div>
-        <v-menu open-on-hover>
+        <v-menu open-on-hover v-if="! isLoggedIn()">
             <v-btn slot="activator" flat>
                 Filter <v-icon>arrow_drop_down</v-icon>
             </v-btn>
             <v-list class="menuOpen">
-                <v-list-tile @click="getProjects()">
+                <v-list-tile @click="noFilter()">
                     <v-list-tile-title>All</v-list-tile-title>
                 </v-list-tile>
                 <v-list-tile @click="createdFilter()">
@@ -20,10 +20,11 @@
 
             </v-list>
         </v-menu>
+        <v-text-field v-model="searchText" :append-icon="'search'" ></v-text-field>
         <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
             <v-container grid-list-lg fluid id="projects">
                 <v-layout row wrap>
-                <v-flex lg4 id="project" v-for="project in projects" v-if="project.open">
+                <v-flex d-flex lg4 id="project" v-for="project in search" v-if="project.open">
                     <v-card  class="v-card" height="100%">
                         <router-link :to="{ name : 'project', params: { projectId: project.id} }">
                             <v-card-media contain v-bind:src="'http://localhost:4941/api/v2/projects/' + project.id + '/image'" height="250"/>
@@ -49,14 +50,30 @@
                 error: "",
                 errorFlag: false,
                 projects: [],
+                results: [],
                 selected: {},
                 busy: false,
                 count: 0,
-                allLoaded: false
+                allLoaded: false,
+                searchText: ""
             }
         },
         mounted: function () {
             this.getProjects();
+        },
+        computed: {
+            search : function () {
+                if (this.searchText.length > 0) {
+                    this.results = [];
+                    for (var i = 0; i < this.projects.length; i += 1) {
+                        if (this.projects[i].title.indexOf(this.searchText) !== -1 || this.projects[i].subtitle.indexOf(this.searchText) !== -1) {
+                            this.results.push(this.projects[i])
+                        }
+                    }
+                }
+                return this.results
+
+            },
         },
         methods: {
             getProjects: function () {
@@ -65,6 +82,7 @@
                     .then(function (response) {
                         if (response.data.length > 0) {
                             this.projects = this.projects.concat(response.data);
+                            this.results = this.projects.concat(response.data);
                             this.count += 6;
                             this.allLoaded = false;
                         } else {
@@ -89,7 +107,7 @@
             createdFilter : function () {
                 this.$http.get('http://127.0.0.1:4941/api/v2/projects/?open=true&creator=' + localStorage.getItem('id'))
                     .then(function (response) {
-                        this.projects = response.data;
+                        this.results = response.data;
                     }, function (error) {
                         this.error = error;
                         this.errorFlag = true;
@@ -98,7 +116,7 @@
             backedFilter : function () {
                 this.$http.get('http://127.0.0.1:4941/api/v2/projects/?open=true&backer=' + localStorage.getItem('id'))
                     .then(function (response) {
-                        this.projects = response.data;
+                        this.results = response.data;
                     }, function (error) {
                         this.error = error;
                         this.errorFlag = true;
@@ -112,6 +130,14 @@
                 }
 
 
+            },
+            isLoggedIn : function () {
+                let isUser = localStorage.getItem("id") == "null" || localStorage.getItem("id") == 'undefined' || localStorage.getItem('id') == null;
+                return isUser;
+            },
+            noFilter: function () {
+                console.log(this.results)
+                this.results = this.projects;
             }
         }
     }
