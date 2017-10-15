@@ -109,6 +109,8 @@
                             this.error = error;
                             this.errorFlag = true;
                         });
+                } else {
+                    this.errorFlag = true;
                 }
             }, isLoggedIn : function () {
                 let isUser = localStorage.getItem("id") == "null" || localStorage.getItem("id") == 'undefined' || localStorage.getItem('id') == null ;
