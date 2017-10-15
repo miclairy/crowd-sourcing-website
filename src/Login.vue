@@ -1,48 +1,61 @@
 <template>
     <v-container>
-        <v-card v-if="isLoggedIn()">
+        <!--<v-flex lg6 >-->
+        <v-card v-if="isLoggedIn()" class="center">
             <h3>Reach your Dreams</h3>
-            <form >
-                <input v-model="username" class='login' type="text" placeholder="username"/>
-                <input v-model="password" class='login' type="password" placeholder="password"/>
-                <button class="btnLogin" type="button" v-on:click="login()">login</button>
-                <div v-if="errorFlag" style="color: darkred;">
-                    <p>Incorrect Username or Password</p>
-                </div>
-                <p>Not registered? <router-link :to="{ path:'/signup'}">Create an account</router-link></p>
-            </form>
+
+         <v-form v-model="valid">
+                <v-text-field
+                        label="Username"
+                        v-model="username"
+                        :rules="nameRules"
+                        required
+                        class="text"
+                ></v-text-field>
+                <v-text-field
+                        label="Password"
+                        v-model="password"
+                        :rules="passwordRules"
+                        required
+                        class="text"
+                ></v-text-field>
+             <div v-if="errorFlag" style="color: darkred;">
+                 <p>Incorrect Username or Password</p>
+             </div>
+             <v-btn class="btnLogin green" v-on:click="login()">login</v-btn>
+             <p>Not registered? <router-link :to="{ path:'/signup'}">Create an account</router-link></p>
+
+         </v-form>
         </v-card>
 
         <v-card v-if="!isLoggedIn()">
             <h2>Please log out to log in as a different user</h2>
         </v-card>
+        <!--</v-flex>-->
     </v-container>
 </template>
 
 <style>
-    .login {
-        outline: 0;
-        background: #f2f2f2;
-        width: 100%;
-        border: 0;
-        margin: 5px -5px 15px;
-        padding: 15px;
-        box-sizing: border-box;
-        font-size: 14px;
+
+    .center{
+        justify-content: center;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
     }
+
+    .text {
+        max-width: 550px;
+        margin-left: 25px;
+    }
+
     .btnLogin {
-        font-family: "Roboto", sans-serif;
-        text-transform: uppercase;
-        outline: 0;
         background: #4CAF50;
         width: 100%;
-        border: 0;
-        padding: 15px;
         color: #FFFFFF;
-        font-size: 14px;
-        -webkit-transition: all 0.3 ease;
-        transition: all 0.3 ease;
-        cursor: pointer;
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
     }
     .btnLogin:hover,.btnLogin:active,.btnLogin:focus {
         background: #43A047;
@@ -57,6 +70,13 @@
                 errorFlag: false,
                 username: "",
                 password: "",
+                valid: false,
+                nameRules: [
+                    (v) => !!v || 'Name is required',
+                ],
+                passwordRules: [
+                    (v) => !!v || 'Password is required',
+                ],
             }
         },
         methods: {
@@ -67,25 +87,27 @@
                 } else {
                     url = 'http://localhost:4941/api/v2/users/login?username=' + this.username + "&password=" + this.password
                 }
-                this.$http.post(url)
-                    .then(function (response) {
-                        if (response.status == 200) {
-                            this.errorFlag = false;
+                if (this.username.length > 0 && this.password.length > 0) {
+                    this.$http.post(url)
+                        .then(function (response) {
+                            if (response.status == 200) {
+                                this.errorFlag = false;
 //                            this.$store.commit('setValues', response.body.token, response.body.id);
-                           console.log(response.body.token);
-                            console.log(response.body.id);
-                            // Store
-                            localStorage.setItem("id", response.body.id);
-                            localStorage.setItem("token", response.body.token);
+                                console.log(response.body.token);
+                                console.log(response.body.id);
+                                // Store
+                                localStorage.setItem("id", response.body.id);
+                                localStorage.setItem("token", response.body.token);
 
-                            this.$router.push("/projects")
-                        } else {
+                                this.$router.push("/projects")
+                            } else {
+                                this.errorFlag = true;
+                            }
+                        }, function (error) {
+                            this.error = error;
                             this.errorFlag = true;
-                        }
-                    }, function (error) {
-                    this.error = error;
-                    this.errorFlag = true;
-                });
+                        });
+                }
             }, isLoggedIn : function () {
                 let isUser = localStorage.getItem("id") == "null" || localStorage.getItem("id") == 'undefined' || localStorage.getItem('id') == null ;
                 return isUser;
