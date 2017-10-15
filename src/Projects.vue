@@ -25,7 +25,9 @@
                 <v-layout row wrap>
                 <v-flex xs4 id="project" v-for="project in projects" v-if="project.open">
                     <v-card  class="v-card" height="100%">
-                        <v-card-media contain v-bind:src="'http://localhost:4941/api/v2/projects/' + project.id + '/image'" height="250"/>
+                        <router-link :to="{ name : 'project', params: { projectId: project.id} }">
+                            <v-card-media contain v-bind:src="'http://localhost:4941/api/v2/projects/' + project.id + '/image'" height="250"/>
+                        </router-link>
                         <v-card-title primary-title>
                             <h3 class="headline mb-0"><router-link :to="{ name : 'project', params: { projectId: project.id} }">{{ project.title }} </router-link></h3>
                             <div> {{project.subtitle }} </div>
@@ -41,7 +43,6 @@
 </template>
 
 <script>
-//    $("v-card-media").lazyLoadXT();
     export default {
         data(){
             return {
