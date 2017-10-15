@@ -3,24 +3,26 @@
         <div v-if="errorFlag" style="color: darkred;">
             {{ error }}
         </div>
-        <v-menu open-on-hover v-if="! isLoggedIn()">
-            <v-btn slot="activator" flat>
-                Filter <v-icon>arrow_drop_down</v-icon>
-            </v-btn>
-            <v-list class="menuOpen">
-                <v-list-tile @click="noFilter()">
-                    <v-list-tile-title>All</v-list-tile-title>
-                </v-list-tile>
-                <v-list-tile @click="createdFilter()">
-                    <v-list-tile-title>Created</v-list-tile-title>
-                </v-list-tile>
-                <v-list-tile @click="backedFilter()">
-                    <v-list-tile-title>Backed</v-list-tile-title>
-                </v-list-tile>
+        <v-layout row >
+            <v-text-field v-model="searchText" single-line label="Search Projects...." :append-icon="'search'" class="search"></v-text-field>
+            <v-menu open-on-hover v-if="! isLoggedIn()" class="center">
+                <v-btn slot="activator" flat>
+                    {{ filter}} <v-icon>arrow_drop_down</v-icon>
+                </v-btn>
+                <v-list class="menuOpen">
+                    <v-list-tile @click="noFilter()">
+                        <v-list-tile-title>All</v-list-tile-title>
+                    </v-list-tile>
+                    <v-list-tile @click="createdFilter()">
+                        <v-list-tile-title>Created</v-list-tile-title>
+                    </v-list-tile>
+                    <v-list-tile @click="backedFilter()">
+                        <v-list-tile-title>Backed</v-list-tile-title>
+                    </v-list-tile>
 
-            </v-list>
-        </v-menu>
-        <v-text-field v-model="searchText" :append-icon="'search'" ></v-text-field>
+                </v-list>
+            </v-menu>
+        </v-layout>
         <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">
             <v-container grid-list-lg fluid id="projects">
                 <v-layout row wrap>
@@ -55,7 +57,8 @@
                 busy: false,
                 count: 0,
                 allLoaded: false,
-                searchText: ""
+                searchText: "",
+                filter: "Filter"
             }
         },
         mounted: function () {
@@ -105,6 +108,7 @@
 
             },
             createdFilter : function () {
+                this.filter = "Created";
                 this.$http.get('http://127.0.0.1:4941/api/v2/projects/?open=true&creator=' + localStorage.getItem('id'))
                     .then(function (response) {
                         this.results = response.data;
@@ -114,6 +118,7 @@
                     });
             },
             backedFilter : function () {
+                this.filter = "Backed";
                 this.$http.get('http://127.0.0.1:4941/api/v2/projects/?open=true&backer=' + localStorage.getItem('id'))
                     .then(function (response) {
                         this.results = response.data;
@@ -136,6 +141,7 @@
                 return isUser;
             },
             noFilter: function () {
+                this.filter = "All";
                 console.log(this.results)
                 this.results = this.projects;
             }
@@ -147,5 +153,14 @@
 <style>
     .menuOpen {
         background-color: snow;
+    }
+
+    .search{
+        max-width: 600px;
+        margin: auto;
+    }
+
+    .center{
+        margin: auto;
     }
 </style>
