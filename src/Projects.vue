@@ -69,14 +69,14 @@
             search : function () {
                 if (this.searchText.length > 0) {
                     this.results = [];
-                    for (var i = 0; i < this.projects.length; i += 1) {
+                    for (let i = 0; i < this.projects.length; i += 1) {
                         if (this.projects[i].title.toLowerCase().indexOf(this.searchText.toLowerCase()) !== -1 ||
                             this.projects[i].subtitle.toLowerCase().indexOf(this.searchText.toLowerCase()) !== -1) {
                             this.results.push(this.projects[i]);
-                            console.log(this.projects[i].title);
                         }
                     }
-
+                    console.log("search count " + this.count);
+                    this.results = this.results.slice(0, this.count);
                     return this.results;
 
                 } else {
@@ -152,8 +152,8 @@
                 this.createdFilter();
             },
             loadMore : function () {
-                console.log("Loading more " + this.count + this.projects.length);
                 this.count += 6;
+                console.log("Loading more " + this.count);
                 if (this.count < this.projects.length) {
                     this.busy = true;
 
