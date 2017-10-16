@@ -60,33 +60,7 @@
         margin-left: 25px;
     }
 
-    .register {
-        outline: 0;
-        background: #f2f2f2;
-        width: 100%;
-        border: 0;
-        margin: 5px -5px 15px;
-        padding: 15px;
-        box-sizing: border-box;
-        font-size: 14px;
-    }
-    .btnregister {
-        font-family: "Roboto", sans-serif;
-        text-transform: uppercase;
-        outline: 0;
-        background: #4CAF50;
-        width: 100%;
-        border: 0;
-        padding: 15px;
-        color: #FFFFFF;
-        font-size: 14px;
-        -webkit-transition: all 0.3 ease;
-        transition: all 0.3 ease;
-        cursor: pointer;
-    }
-    .btnregister:hover,.btnregister:active,.btnregister:focus {
-        background: #43A047;
-    }
+
 </style>
 
 <script>

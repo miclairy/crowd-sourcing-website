@@ -32,9 +32,9 @@
                             <v-card-media v-bind:src="'http://localhost:4941/api/v2/projects/' + project.id + '/image'" height="250"/>
                         </router-link>
                         <v-card-title primary-title>
-                            <h3 class="headline mb-0"><router-link :to="{ name : 'project', params: { projectId: project.id} }">{{ project.title }} </router-link></h3>
+                            <h3 class="headline mb-0 textProject"><router-link :to="{ name : 'project', params: { projectId: project.id} }">{{ project.title }} </router-link></h3>
                         </v-card-title>
-                            <div> {{project.subtitle }} </div>
+                            <div class="textProject smText"> {{project.subtitle }} </div>
 
                     </v-card>
                 </v-flex>
@@ -198,5 +198,15 @@
         margin-left: auto;
         margin-right: auto;
         align-content: center;
+    }
+
+    .textProject {
+        text-align: left;
+    }
+
+    .smText {
+       margin-left: 20px;
+        margin-right: 20px;
+        padding-bottom: 10px;
     }
 </style>
