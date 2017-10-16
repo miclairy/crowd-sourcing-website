@@ -36,8 +36,11 @@
             </v-layout>
             <v-flex>
                 <v-layout row>
+
                         <v-subheader>Upload images</v-subheader>
-                        <input type="file" v-on:change="preview($event.target.files[0]);" accept="image/*" class="input-file">
+                    <label id="uploadImage" for="inputImage"><icon scale="3" name="camera"></icon></label>
+
+                    <input type="file" v-on:change="preview($event.target.files[0]);" accept="image/*" id="inputImage">
                         <img src="" id="preview"/>
                 </v-layout>
             </v-flex>
@@ -223,5 +226,31 @@
     }
     .createbtnt button:hover,.btnLogin:active,.btnLogin:focus {
         background: #43A047;
+    }
+
+    #inputImage {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+    #uploadImage {
+        font-size: 1.25em;
+        font-weight: 700;
+        color: white;
+        background-color: #6f14a1;
+        display: inline-block;
+    }
+
+    #uploadImage:focus,
+    #uploadImage:hover {
+        background-color: #9374a6;
+    }
+
+    #uploadImage {
+        cursor: pointer; /* "hand" cursor */
     }
 </style>

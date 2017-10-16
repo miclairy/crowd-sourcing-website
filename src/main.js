@@ -11,6 +11,9 @@ import Login from './Login.vue'
 import SignUp from './SignUp.vue'
 import CreateProject from './CreateProject.vue'
 import infiniteScroll from 'vue-infinite-scroll'
+import Icon from 'vue-awesome/components/Icon.vue'
+import 'vue-awesome/icons'
+
 
 Vue.use(Vuetify);
 Vue.use(VueRouter);
@@ -18,11 +21,12 @@ Vue.use(VueResource);
 Vue.use(Vuex);
 Vue.use(infiniteScroll);
 
+Vue.component('icon', Icon);
 
 const routes = [
     {
         path: "/",
-        component: Home
+        redirect: "/projects"
     },
     {
         path: '/projects',
