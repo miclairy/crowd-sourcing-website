@@ -32,7 +32,7 @@
                     </div>
 
                 </v-layout>
-                <div v-if="selected.open && !owner"><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#pledgeModal">Pledge</button></div>
+                <div v-if="selected.open && !owner && !isLoggedIn()"><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#pledgeModal">Pledge</button></div>
                 <div v-if="!selected.open"><p>Project is closed</p></div>
                 <div v-if="owner && selected.open"><button type="button" class="btn btn-danger btn-lg" v-on:click="closeProject()">close project</button></div>
             </v-flex>
@@ -227,6 +227,10 @@
                 }, function (error) {
                     console.log(error);
                 })
+            },
+            isLoggedIn : function () {
+                let isUser = localStorage.getItem("id") == "null" || localStorage.getItem("id") == 'undefined' || localStorage.getItem('id') == null;
+                return isUser;
             }
         }
     }
