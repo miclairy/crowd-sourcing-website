@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2>Create a Project</h2>
-        <v-container fluid>
+        <v-container fluid v-if="! isLoggedIn()">
             <v-layout row>
                 <v-flex xs4>
                     <v-subheader>Title</v-subheader>
@@ -72,12 +72,14 @@
                 </v-layout>
             </v-flex>
 
+            <button class="createbtn" type="button" v-on:click="createProject()">Create Project</button>
+
+
         </v-container>
 
+        <h3 v-if="isLoggedIn()">You mst log in to create a project</h3>
 
 
-
-        <button class="createbtn" type="button" v-on:click="createProject()">Create Project</button>
     </div>
 </template>
 
@@ -186,6 +188,9 @@
                     }
 
                 }
+            }, isLoggedIn : function () {
+                let isUser = localStorage.getItem("id") == "null" || localStorage.getItem("id") == 'undefined' || localStorage.getItem('id') == null;
+                return isUser;
             },
         }
     }

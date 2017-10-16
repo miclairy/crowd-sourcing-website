@@ -15,7 +15,7 @@
             <v-flex xs6 >
                 <h1> {{ selected.title }} </h1>
                 <h2> {{ selected.subtitle }} </h2>
-                <p> Target: ${{ selected.target }} </p>
+                <p> Target: ${{ selected.target / 100 }} </p>
                 <div class="progress" >
                     <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="percentage"
                          aria-valuemin="0" aria-valuemax="100" :style="'width:'+percentage+'%'">
@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <p> {{ numberOfBackers }} backers </p>
-                <p> ${{ amountPledged }} toward the target </p>
+                <p> ${{ amountPledged / 100 }} toward the target </p>
                 <v-layout class="creators" row>
                     <p id="created"> Created </p>
                     <p class="creators" > {{ creationDate }} by </p>
@@ -77,7 +77,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Modal Header</h4>
+                        <h4 class="modal-title">Pledge to: {{selected.title}}</h4>
                     </div>
                     <div class="modal-body">
                         <v-container>
@@ -182,6 +182,7 @@
                             }
 
                             this.percentage = Math.round((this.amountPledged / this.selected.target) * 1000);
+                            this.amountPledged = this.amountPledged / 100;
                             this.loaded = true;
 
                         }, function (error) {
@@ -191,7 +192,7 @@
                 }
             },
             pledge : function () {
-                this.pledgeData.amount = parseInt(this.pledgeData.amount);
+                this.pledgeData.amount = parseInt(this.pledgeData.amount) * 100;
                 console.log(this.pledgeData.anonymous);
                 this.$http.post('http://localhost:4941/api/v2/projects/' + this.id + "/pledge", JSON.stringify(this.pledgeData),
                     {headers: {'x-authorization': localStorage.getItem("token")}})
