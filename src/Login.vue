@@ -6,7 +6,7 @@
 
          <v-form v-model="valid">
                 <v-text-field
-                        label="Username"
+                        label="Username or E-mail"
                         v-model="username"
                         :rules="nameRules"
                         required
@@ -74,7 +74,7 @@
                 valid: false,
                 hidden: true,
                 nameRules: [
-                    (v) => !!v || 'Name is required',
+                    (v) => !!v || 'Username / Email is required',
                 ],
                 passwordRules: [
                     (v) => !!v || 'Password is required',
@@ -83,12 +83,8 @@
         },
         methods: {
             login : function () {
-                let url = "";
-                if (/@/g.test(this.username)){
-                    url = 'http://localhost:4941/api/v2/users/login?email=' + this.username + "&password=" + this.password
-                } else {
-                    url = 'http://localhost:4941/api/v2/users/login?username=' + this.username + "&password=" + this.password
-                }
+                  let  url = 'http://localhost:4941/api/v2/users/login?email=' + this.username + '&username=' + this.username + "&password=" + this.password;
+
                 if (this.username.length > 0 && this.password.length > 0) {
                     this.$http.post(url)
                         .then(function (response) {
