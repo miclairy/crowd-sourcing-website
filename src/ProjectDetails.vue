@@ -64,7 +64,7 @@
                 <div v-for="reward in selected.rewards">
                 <v-card class="ma-3">
                     <v-card-title primary-title><h4 class="headline mb-0">Pledge ${{ reward.amount }} or more</h4></v-card-title>
-                <v-card-text style="text-align: left"> and receive...  {{ reward.description }}</v-card-text>
+                <v-card-text style="text-align: left; font-size: 16px"> and receive...  {{ reward.description }}</v-card-text>
                 </v-card>
                 </div>
             </v-flex>

@@ -2,7 +2,7 @@
   <div id="app">
     <v-app>
       <v-toolbar class="light dense">
-        <v-toolbar-title> Dream Starter </v-toolbar-title>
+        <v-toolbar-title class="dream"> Dream Starter </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-side-icon  @click.stop="drawer = !drawer" class="hidden-md-and-up"></v-toolbar-side-icon>
         <v-toolbar-items class="hidden-sm-and-down">
@@ -153,6 +153,17 @@ li {
 }
 
 a {
-  color: #42b983;
+  color: #6f14a1;
 }
+
+.dream {
+  color: #6f14a1;
+}
+
+  p {
+    font-size: 16px;
+  }
+
+
+
 </style>
