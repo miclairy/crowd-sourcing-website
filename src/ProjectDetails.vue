@@ -49,13 +49,13 @@
                 <p class="leftAligned"> {{ selected.description }} </p>
 
                 <h2 class="leftAligned"> Pledges </h2>
-                <v-container>
-                <v-layout row v-if="anonymousPledged > 0">
-                    <p class="leftAligned"> Anonymous backers gave ${{anonymousPledged / 100}}</p>
-                </v-layout>
+                <v-container class="pledge" >
+                    <h4 v-if="anonymousPledged > 0" class="headline mb-0"><b>${{anonymousPledged / 100}} </b></h4>
+                    <p v-if="anonymousPledged > 0"> Anonymous </p>
                 </v-container>
-                <v-container v-for="backer in selected.backers.slice(0, 5)" v-if="backer.username != 'anonymous'">
-                        <p primary-title class="leftAligned">{{backer.username }} gave ${{ backer.amount / 100 }}</p>
+                <v-container class="pledge" v-for="backer in selected.backers.slice(0, 5)" v-if="backer.username != 'anonymous'">
+                    <h4 class="headline mb-0"><b>${{ backer.amount / 100 }} </b></h4>
+                    <p>{{backer.username }} </p>
                 </v-container>
 
             </v-flex>
@@ -66,7 +66,7 @@
                 <div v-for="reward in selected.rewards">
                 <v-card class="ma-3">
                     <v-card-title primary-title><h4 class="headline mb-0">Pledge ${{ reward.amount }} or more</h4></v-card-title>
-                <v-card-text class="leftAligned"> and receive...  {{ reward.description }}</v-card-text>
+                <v-card-text style="text-align: left"> and receive...  {{ reward.description }}</v-card-text>
                 </v-card>
                 </div>
             </v-flex>
@@ -328,6 +328,10 @@
     .progress {
         max-width: 90%;
         margin: auto;
+    }
+
+    .pledge {
+        border-bottom: dotted;
     }
 
 </style>
