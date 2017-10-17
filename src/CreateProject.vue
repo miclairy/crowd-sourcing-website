@@ -4,17 +4,17 @@
         <v-container fluid v-if="! isLoggedIn()">
             <v-layout row>
             <v-flex lg6>
-                <v-text-field class="createField" v-model="title" label="Title"></v-text-field>
-                <v-text-field class="createField" v-model="subtitle" name="input-2-3" label="Subtitle" ></v-text-field>
-                <v-text-field class="createField" v-model="description" name="input-7-3" label="Description" multi-line></v-text-field>
-                <v-text-field class="createField" v-model="target" error :rules="[checkIfCost(target)]" label="Target Amount" prefix="$"></v-text-field>
-                <h6>Rewards</h6>
+                <v-text-field required :rules="notEmpty" class="createField" v-model="title" label="Title"></v-text-field>
+                <v-text-field required :rules="notEmpty" class="createField" v-model="subtitle" name="input-2-3" label="Subtitle" ></v-text-field>
+                <v-text-field required :rules="notEmpty" class="createField" v-model="description" name="input-7-3" label="Description" multi-line></v-text-field>
+                <v-text-field required :rules="costRule" class="createField" v-model="target" label="Target Amount" prefix="$"></v-text-field>
+                <h6>Rewards*</h6>
             <v-layout row>
                 <v-flex xs8 class="ml-3">
-                    <v-text-field class="createField" v-model="amount" label="Amount" prefix="$" error :rules="[checkIfCost(amount)]" value="10.00"></v-text-field>
+                    <v-text-field class="createField" v-model="amount" label="Amount" prefix="$" :rules="costRule" value="10.00"></v-text-field>
                 </v-flex>
                 <v-flex xs8 class="ml-3">
-                    <v-text-field class="createField" v-model="reward_description" label="Description"></v-text-field>
+                    <v-text-field class="createField" :rules="notEmpty" v-model="reward_description" label="Description"></v-text-field>
                 </v-flex>
                 <v-spacer></v-spacer>
 
@@ -42,7 +42,7 @@
             <!--</v-flex>-->
             </v-flex>
             <v-flex lg6 class="imagebox">
-                <h6>Upload images</h6>
+                <h6>Project Image</h6>
                     <label v-if="image==''" id="uploadImage" for="inputImage"><icon class="iconButton" scale="3" name="camera"></icon></label>
                 <label v-else id="changeImage" for="inputImage"><icon scale="3" name="camera"></icon></label>
                 <v-icon v-if="image!==''" v-on:click="clearImage()" class="iconButton" scale="3" x-large id="clearImage" >clear</v-icon>
@@ -75,7 +75,14 @@
                 uploadedFiles: [],
                 uploadError: null,
                 uploadFieldName: 'photos',
-                image : ""
+                image : "",
+                notEmpty: [
+                    (v) => !!v || 'Required',
+                ],
+                costRule: [
+                    (v) => !!v || 'Required',
+                    (v) => !isNaN(v) || 'Must be a cost',
+                ]
             }
         },
         methods : {
@@ -148,7 +155,7 @@
                 if (isNaN(cost)) {
                     return 'Must be a cost';
                 }
-                return "";
+                return true;
             },
             preview(file) {
                 this.image = file;
