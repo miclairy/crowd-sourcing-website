@@ -78,8 +78,9 @@
                 ],
                 costRule: [
                     (v) => !!v || 'Required',
-                    (v) => !isNaN(v) || 'Must be a cost',
-                ]
+                    (v) => !isNaN(v) || 'Must be a dollar amount',
+                    (v) => v > 0 || 'Must be greater than 0'
+                 ]
             }
         },
         methods : {
@@ -128,7 +129,7 @@
                 }
             },
             addReward: function () {
-                if (!isNaN(this.amount) && this.reward_description.trim().length > 0) {
+                if (!isNaN(this.amount) && this.reward_description.trim().length > 0 && this.amount > 0) {
                     let reward = {
                         "amount": parseInt(this.amount),
                         "description": this.reward_description
