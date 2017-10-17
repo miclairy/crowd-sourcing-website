@@ -6,12 +6,10 @@
         <v-container fluid id="project-big">
 
 
-            <v-flex xs8>
-                <label v-if="owner" id="editImage" for="changeImage"><v-icon dark>edit</v-icon></label>
-                <input id="changeImage" name="changeImage" v-if="owner" type="file" v-on:change="changeImage($event.target.files[0]);" accept="image/*" class="inputFile">
-            </v-flex>
             <v-layout row>
             <v-flex xs6>
+                <label v-if="owner" id="editImage" for="changeImage"><icon class="iconButton" scale="1" name="camera"></icon></label>
+                <input id="changeImage" name="changeImage" v-if="owner" type="file" v-on:change="changeImage($event.target.files[0]);" accept="image/*" class="inputFile">
                 <img  v-bind:src="imageSrc"/>
             </v-flex>
             <v-flex xs6 >
@@ -33,7 +31,7 @@
                         {{ percentage }}%
                     </div>
                 </div>
-                <p class="leftAligned"> ${{ amountPledged }} toward the target </p>
+                <p class="leftAligned"> ${{ amountPledged / 100 }} toward the target </p>
 
                 <p class="leftAligned"> {{ numberOfBackers }} backers </p>
 
@@ -92,7 +90,7 @@
                                     <v-subheader>Amount</v-subheader>
                                 </v-flex>
                                 <v-flex xs8>
-                                    <v-text-field v-model="pledgeData.amount" prefix="$" ></v-text-field>
+                                    <v-text-field v-model="pledgeData.amount" prefix="$" :rules="costRule" ></v-text-field>
                                 </v-flex>
                             </v-layout>
                             <v-layout row>
@@ -100,7 +98,7 @@
                                     <v-subheader>Credit Card</v-subheader>
                                 </v-flex>
                                 <v-flex xs8>
-                                    <v-text-field v-model="pledgeData.card.authToken" ></v-text-field>
+                                    <v-text-field v-model="pledgeData.card.authToken" :rules="required" ></v-text-field>
                                 </v-flex>
                             </v-layout>
                         </v-container>
@@ -138,13 +136,20 @@
                 loaded : false,
                 pledgeData: {
                     id: parseInt(localStorage.getItem("id")),
-                    amount: 0,
+                    amount: "",
                     anonymous: false,
                     card: {
                         authToken: ""
                     }
                 },
-                imageSrc: ""
+                imageSrc: "",
+                costRule: [
+                    (v) => !!v || 'Required',
+                    (v) => !isNaN(v) || 'Must be a cost',
+                ],
+                required: [
+                    (v) => !!v || 'Required',
+                ]
             }
         },
         mounted: function () {
@@ -187,8 +192,7 @@
                                 }
                             }
 
-                            this.percentage = Math.round((this.amountPledged / this.selected.target) * 1000);
-                            this.amountPledged = this.amountPledged / 100;
+                            this.percentage = Math.round(((this.amountPledged) / (this.selected.target)) * 100);
                             this.loaded = true;
 
                         }, function (error) {
@@ -198,16 +202,21 @@
                 }
             },
             pledge : function () {
-                this.pledgeData.amount = parseInt(this.pledgeData.amount) * 100;
-                console.log(this.pledgeData.anonymous);
-                this.$http.post('http://localhost:4941/api/v2/projects/' + this.id + "/pledge", JSON.stringify(this.pledgeData),
-                    {headers: {'x-authorization': localStorage.getItem("token")}})
-                    .then(function (response) {
-                        console.log(response);
-                        this.getProject(this.id);
-                    }, function (error) {
-                        console.log(error);
-                    })
+                if (this.pledgeData.amount.length > 0 && this.pledgeData.card.authToken.length > 0) {
+                    this.pledgeData.amount = parseInt(this.pledgeData.amount) * 100;
+                    console.log(this.pledgeData.anonymous);
+                    this.$http.post('http://localhost:4941/api/v2/projects/' + this.id + "/pledge", JSON.stringify(this.pledgeData),
+                        {headers: {'x-authorization': localStorage.getItem("token")}})
+                        .then(function (response) {
+                            console.log(response);
+                            this.getProject(this.id);
+                        }, function (error) {
+                            console.log(error);
+                        });
+                    this.pledgeData.amount = "";
+                    this.pledgeData.card.authToken = "";
+
+                }
             },
             closeProject : function() {
                 if (confirm("Are you sure you want to close the project?") == true) {
@@ -290,6 +299,7 @@
         color: white;
         background-color: #6f14a1;
         display: inline-block;
+        width: 100%;
     }
 
     #editImage:focus,
