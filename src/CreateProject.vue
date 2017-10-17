@@ -43,10 +43,10 @@
                     <input type="file" v-on:change="preview($event.target.files[0]);" accept="image/*" id="inputImage">
             </v-flex>
             </v-layout>
+            <p style="color: darkred">{{error}}</p>
+            <button class="createbtn" type="button" v-on:click="createProject()">Create Project</button>
 
         </v-container>
-        <p style="color: darkred">{{error}}</p>
-        <button class="createbtn" type="button" v-on:click="createProject()">Create Project</button>
 
         <h3 v-if="isLoggedIn()">You mst log in to create a project</h3>
 
@@ -275,7 +275,6 @@
     }
 
     #changeImage {
-        margin: auto;
         cursor: pointer;
         z-index: 5;
         position: absolute;

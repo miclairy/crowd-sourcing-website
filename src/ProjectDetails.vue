@@ -4,6 +4,8 @@
             {{ error }}
         </div>
         <v-container fluid id="project-big">
+
+
             <v-flex xs8>
                 <label v-if="owner" id="editImage" for="changeImage"><v-icon dark>edit</v-icon></label>
                 <input id="changeImage" name="changeImage" v-if="owner" type="file" v-on:change="changeImage($event.target.files[0]);" accept="image/*" class="inputFile">
@@ -13,17 +15,8 @@
                 <img  v-bind:src="imageSrc"/>
             </v-flex>
             <v-flex xs6 >
-                <h1> {{ selected.title }} </h1>
-                <h2> {{ selected.subtitle }} </h2>
-                <p> Target: ${{ selected.target / 100 }} </p>
-                <div class="progress" >
-                    <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="percentage"
-                         aria-valuemin="0" aria-valuemax="100" :style="'width:'+percentage+'%'">
-                        {{ percentage }}%
-                    </div>
-                </div>
-                <p> {{ numberOfBackers }} backers </p>
-                <p> ${{ amountPledged / 100 }} toward the target </p>
+                <h1 class="leftAligned"> {{ selected.title }} </h1>
+                <h2 class="leftAligned"> {{ selected.subtitle }} </h2>
                 <v-layout class="creators" row>
                     <p id="created"> Created </p>
                     <p class="creators" > {{ creationDate }} by </p>
@@ -32,35 +25,48 @@
                     </div>
 
                 </v-layout>
-                <div v-if="selected.open && !owner && !isLoggedIn()"><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#pledgeModal">Pledge</button></div>
-                <div v-if="!selected.open"><p>Project is closed</p></div>
-                <div v-if="owner && selected.open"><button type="button" class="btn btn-danger btn-lg" v-on:click="closeProject()">close project</button></div>
+
+                <p class="leftAligned"> Target: ${{ selected.target / 100 }} </p>
+                <div class="progress" >
+                    <div class="progress-bar progress-bar-success" role="progressbar" v-bind:aria-valuenow="percentage"
+                         aria-valuemin="0" aria-valuemax="100" :style="'width:'+percentage+'%'">
+                        {{ percentage }}%
+                    </div>
+                </div>
+                <p class="leftAligned"> ${{ amountPledged }} toward the target </p>
+
+                <p class="leftAligned"> {{ numberOfBackers }} backers </p>
+
+
+                <div v-if="selected.open && !owner && !isLoggedIn()"><button type="button" id="pledgeButton" class="btn btn-info btn-lg" data-toggle="modal" data-target="#pledgeModal">Pledge</button></div>
+                <div v-if="!selected.open"><p style="color: darkred">Project is closed</p></div>
+                <div v-if="owner && selected.open"><button type="button" id="closeButton" class="btn btn-danger btn-lg" v-on:click="closeProject()">close project</button></div>
             </v-flex>
             </v-layout>
             <v-layout row>
             <v-flex xs6>
-                <h2>About this project</h2>
-                <p> {{ selected.description }} </p>
+                <h2 class="leftAligned">About this project</h2>
+                <p class="leftAligned"> {{ selected.description }} </p>
 
-                <h2> Pledges </h2>
+                <h2 class="leftAligned"> Pledges </h2>
                 <v-container>
                 <v-layout row v-if="anonymousPledged > 0">
-                    <p> Anonymous backers gave ${{anonymousPledged }}</p>
+                    <p class="leftAligned"> Anonymous backers gave ${{anonymousPledged / 100}}</p>
                 </v-layout>
                 </v-container>
                 <v-container v-for="backer in selected.backers.slice(0, 5)" v-if="backer.username != 'anonymous'">
-                        <p>{{backer.username }} gave ${{ backer.amount }}</p>
+                        <p primary-title class="leftAligned">{{backer.username }} gave ${{ backer.amount / 100 }}</p>
                 </v-container>
 
             </v-flex>
 
 
-            <v-flex xs5>
-            <h2> Rewards </h2>
+            <v-flex xs6>
+            <h2 class="leftAligned"> Rewards </h2>
                 <div v-for="reward in selected.rewards">
-                <v-card >
+                <v-card class="ma-3">
                     <v-card-title primary-title><h4 class="headline mb-0">Pledge ${{ reward.amount }} or more</h4></v-card-title>
-                <v-card-text> and receive...  {{ reward.description }}</v-card-text>
+                <v-card-text class="leftAligned"> and receive...  {{ reward.description }}</v-card-text>
                 </v-card>
                 </div>
             </v-flex>
@@ -265,8 +271,7 @@
 
     img {
         margin:auto;
-        max-width:100%;
-        max-height:100%;
+        max-width:600px;
         display: block;
     }
 
@@ -294,6 +299,35 @@
 
     #editImage {
         cursor: pointer; /* "hand" cursor */
+    }
+
+    .leftAligned {
+        text-align: left;
+        margin-left: 20px;
+        margin-right: 10px;
+    }
+
+    #created {
+        margin-left: 15px;
+    }
+
+    #pledgeButton {
+        background-color: #6f14a1;
+        color: whitesmoke;
+        border-color: #6f14a1;
+        width: 90%;
+    }
+
+    #closeButton {
+        background-color: darkred;
+        color: whitesmoke;
+        border-color: darkred;
+        width: 90%;
+    }
+
+    .progress {
+        max-width: 90%;
+        margin: auto;
     }
 
 </style>

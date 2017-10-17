@@ -60,7 +60,17 @@
         margin-left: 25px;
     }
 
-
+    .btnLogin {
+        background: #4CAF50;
+        width: 100%;
+        color: #FFFFFF;
+        justify-content: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .btnLogin:hover,.btnLogin:active,.btnLogin:focus {
+        background: #43A047;
+    }
 </style>
 
 <script>
