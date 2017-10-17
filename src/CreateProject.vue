@@ -25,21 +25,14 @@
 
 
             <table class="rewards">
-            <!--<v-flex xs4 >-->
                 <tr v-for="reward in rewards">
-                    <!--<v-flex xs8 class="ml-3">-->
-                        <td class="data"> ${{reward.amount}} </td>
-                    <!--</v-flex>-->
-                    <!--<v-spacer></v-spacer>-->
-                    <!--<v-flex xs8 class="ml-3">-->
-                        <td class="data"> {{ reward.description }} </td>
-                    <!--</v-flex>-->
-                    <!--<v-spacer></v-spacer>-->
+                    <td class="data"> ${{reward.amount}} </td>
+                    <td class="data"> {{ reward.description }} </td>
                     <td><v-icon v-on:click="deleteReward(reward)" class="iconButton">clear</v-icon></td>
-                <td><v-icon v-on:click="editReward(reward)" class="iconButton">edit</v-icon></td>
+                    <td><v-icon v-on:click="editReward(reward)" class="iconButton">edit</v-icon></td>
                 </tr>
             </table>
-            <!--</v-flex>-->
+
             </v-flex>
             <v-flex lg6 class="imagebox">
                 <h6>Project Image</h6>
@@ -50,8 +43,10 @@
                     <input type="file" v-on:change="preview($event.target.files[0]);" accept="image/*" id="inputImage">
             </v-flex>
             </v-layout>
-            <button class="createbtn" type="button" v-on:click="createProject()">Create Project</button>
+
         </v-container>
+        <p style="color: darkred">{{error}}</p>
+        <button class="createbtn" type="button" v-on:click="createProject()">Create Project</button>
 
         <h3 v-if="isLoggedIn()">You mst log in to create a project</h3>
 
@@ -65,6 +60,7 @@
         data(){
             return {
                 title: "New house for Eeyore ",
+                error: "",
                 subtitle: "Rebuild eeyores house",
                 description: "Rebuild eeyores house because it fell down :",
                 target: 10000,
@@ -88,39 +84,47 @@
         methods : {
             createProject: function(){
                 this.addReward();
-                let project = {
-                    "title": this.title,
-                    "subtitle": this.subtitle,
-                    "description": this.description,
-                    "target": parseInt(this.target) * 100,
-                    creators: [ {
-                        "id" : parseInt(localStorage.getItem('id'))
-                    }],
-                    rewards: this.rewards
-                };
-                this.$http.post('http://localhost:4941/api/v2/projects', JSON.stringify(project), {headers: {'x-authorization': localStorage.getItem("token")}})
-                    .then(function (response) {
-                        if (response.status == 201) {
-                            alert("created " + this.title);
-                            console.log(response.body.id);
-                            console.log(this.image);
-                            if (this.image !== "") {
-                                this.$http.put('http://localhost:4941/api/v2/projects/' + response.body.id + '/image', this.image, {
-                                    headers: {
-                                        'x-authorization': localStorage.getItem("token"),
-                                        'content-type': this.image.type
-                                    }
-                                })
-                                    .then(function (response) {
-                                        console.log(response)
+                this.error = "";
+                if (this.checkFields()) {
+                    let project = {
+                        "title": this.title,
+                        "subtitle": this.subtitle,
+                        "description": this.description,
+                        "target": parseInt(this.target) * 100,
+                        creators: [{
+                            "id": parseInt(localStorage.getItem('id'))
+                        }],
+                        rewards: this.rewards
+                    };
+                    this.$http.post('http://localhost:4941/api/v2/projects', JSON.stringify(project), {headers: {'x-authorization': localStorage.getItem("token")}})
+                        .then(function (response) {
+                            if (response.status == 201) {
+                                alert("created " + this.title);
+                                let id = response.body.id;
+
+                                console.log(this.image);
+                                if (this.image !== "") {
+                                    this.$http.put('http://localhost:4941/api/v2/projects/' + response.body.id + '/image', this.image, {
+                                        headers: {
+                                            'x-authorization': localStorage.getItem("token"),
+                                            'content-type': this.image.type
+                                        }
                                     })
-                            } else {
-                                console.log(response);
+                                        .then(function (response) {
+                                            console.log(response);
+                                            this.$router.push("/projects/" + id);
+                                        })
+                                } else {
+                                    this.$router.push("/projects/" + id);
+                                    console.log(response);
+                                }
                             }
-                        }
-                    } , function (error) {
-                        console.log(error);
-                    })
+                        }, function (error) {
+                            console.log(error);
+                        })
+                } else {
+                    this.error = "Fields have not been filled out correctly"
+                }
             },
             addReward: function () {
                 if (!isNaN(this.amount) && this.reward_description.trim().length > 0) {
@@ -182,6 +186,9 @@
                 this.image = "";
                 var preview = document.querySelector('img'); //selects the query named img
                 preview.src = "";
+            },
+            checkFields : function () {
+                return  this.title.length > 0 &&this.subtitle.length > 0 && this.description.length > 0 && parseInt(this.target) > 0 && this.rewards.length > 0
             }
         }
     }
