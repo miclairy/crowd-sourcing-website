@@ -93,9 +93,9 @@
                         if (response.data.length > 0) {
                             console.log(this.projects.length);
                             this.projects = this.projects.concat(response.data);
-                            this.results = this.projects.slice(0, 9);
+                            this.results = this.projects.slice(0, 6);
                             console.log(this.results);
-                            this.count += 9;
+                            this.count += 6;
                             this.allLoaded = false;
                         } else {
                             this.allLoaded = true;
@@ -121,8 +121,8 @@
                 this.$http.get('http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/?creator=' + localStorage.getItem('id'))
                     .then(function (response) {
                         this.projects = response.data;
-                        this.results = this.projects.slice(0, 9);
-                        this.count += 9;
+                        this.results = this.projects.slice(0, 6);
+                        this.count += 6;
                     }, function (error) {
                         this.error = error;
                         this.errorFlag = true;
@@ -132,8 +132,8 @@
                 this.$http.get('http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/?backer=' + localStorage.getItem('id'))
                     .then(function (response) {
                         this.projects = response.data;
-                        this.results = this.projects.slice(0, 9);
-                        this.count += 9;
+                        this.results = this.projects.slice(0, 6);
+                        this.count += 6;
                     }, function (error) {
                         this.error = error;
                         this.errorFlag = true;

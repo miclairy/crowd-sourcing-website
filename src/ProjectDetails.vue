@@ -158,7 +158,7 @@
         methods: {
             getProject : function(id) {
                 this.id = id;
-                this.imageSrc = 'http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/' + this.id + '/image';
+                this.imageSrc = 'http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/' + this.id + '/image?' + moment();
                 this.amountPledged = 0;
                 this.anonymousPledged = 0;
                 if (id != null) {
