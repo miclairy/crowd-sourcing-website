@@ -26,7 +26,7 @@
         <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="3" class="containerWidth">
             <v-container grid-list-lg fluid id="projects">
                 <v-layout row wrap>
-                <v-flex d-flex lg4 id="project" v-for="project in search" v-if="project.open">
+                <v-flex d-flex lg4 id="project" v-for="project in search">
                     <v-card  class="v-card" height="100%">
                         <router-link :to="{ name : 'project', params: { projectId: project.id} }">
                             <v-card-media v-bind:src="'http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/' + project.id + '/image'" height="250"/>
@@ -129,7 +129,7 @@
                     });
             },
             backedFilter : function () {
-                this.$http.get('http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/?open=true&backer=' + localStorage.getItem('id'))
+                this.$http.get('http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/?backer=' + localStorage.getItem('id'))
                     .then(function (response) {
                         this.projects = response.data;
                         this.results = this.projects.slice(0, 9);
