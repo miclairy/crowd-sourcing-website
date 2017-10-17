@@ -158,11 +158,11 @@
         methods: {
             getProject : function(id) {
                 this.id = id;
-                this.imageSrc = 'http://localhost:4941/api/v2/projects/' + this.id + '/image';
+                this.imageSrc = 'http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/' + this.id + '/image';
                 this.amountPledged = 0;
                 this.anonymousPledged = 0;
                 if (id != null) {
-                    this.$http.get('http://localhost:4941/api/v2/projects/' + id)
+                    this.$http.get('http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/' + id)
                         .then(function (response) {
                             this.selected = response.data;
                             this.creationDate =  moment(this.selected.creationDate).calendar(null, {
@@ -205,7 +205,7 @@
                 if (this.pledgeData.amount.length > 0 && this.pledgeData.card.authToken.length > 0) {
                     this.pledgeData.amount = parseInt(this.pledgeData.amount) * 100;
                     console.log(this.pledgeData.anonymous);
-                    this.$http.post('http://localhost:4941/api/v2/projects/' + this.id + "/pledge", JSON.stringify(this.pledgeData),
+                    this.$http.post('http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/' + this.id + "/pledge", JSON.stringify(this.pledgeData),
                         {headers: {'x-authorization': localStorage.getItem("token")}})
                         .then(function (response) {
                             console.log(response);
@@ -220,7 +220,7 @@
             },
             closeProject : function() {
                 if (confirm("Are you sure you want to close the project?") == true) {
-                    this.$http.put('http://localhost:4941/api/v2/projects/' + this.id , JSON.stringify({"open": false}),
+                    this.$http.put('http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/' + this.id , JSON.stringify({"open": false}),
                         {headers: {'x-authorization': localStorage.getItem("token")}})
                         .then (function (response) {
                             this.getProject(this.id);
@@ -230,13 +230,13 @@
 
             },
             changeImage : function (image) {
-                this.$http.put('http://localhost:4941/api/v2/projects/' + this.id + '/image', image, {headers: {
+                this.$http.put('http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/' + this.id + '/image', image, {headers: {
                     'x-authorization': localStorage.getItem("token"),
                     'content-type' : image.type
                 }})
                 .then(function (response) {
                     console.log(response);
-                    this.imageSrc = 'http://localhost:4941/api/v2/projects/' + this.id + '/image?' + moment();
+                    this.imageSrc = 'http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/' + this.id + '/image?' + moment();
 
 
                 }, function (error) {

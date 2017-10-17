@@ -83,7 +83,7 @@
         },
         methods: {
             login : function () {
-                  let  url = 'http://localhost:4941/api/v2/users/login?email=' + this.username + '&username=' + this.username + "&password=" + this.password;
+                  let  url = 'http://csse-s365.canterbury.ac.nz:4836/api/v2/users/login?email=' + this.username + '&username=' + this.username + "&password=" + this.password;
 
                 if (this.username.length > 0 && this.password.length > 0) {
                     this.$http.post(url)

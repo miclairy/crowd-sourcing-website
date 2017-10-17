@@ -29,7 +29,7 @@
                 <v-flex d-flex lg4 id="project" v-for="project in search" v-if="project.open">
                     <v-card  class="v-card" height="100%">
                         <router-link :to="{ name : 'project', params: { projectId: project.id} }">
-                            <v-card-media v-bind:src="'http://localhost:4941/api/v2/projects/' + project.id + '/image'" height="250"/>
+                            <v-card-media v-bind:src="'http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/' + project.id + '/image'" height="250"/>
                         </router-link>
                         <v-card-title primary-title>
                             <h3 class="headline mb-0 textProject"><router-link :to="{ name : 'project', params: { projectId: project.id} }">{{ project.title }} </router-link></h3>
@@ -88,7 +88,7 @@
         methods: {
             getProjects: function () {
                 console.log(localStorage.getItem("id") + " Loading project ");
-                this.$http.get('http://127.0.0.1:4941/api/v2/projects/?open=true')
+                this.$http.get('http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/?open=true')
                     .then(function (response) {
                         if (response.data.length > 0) {
                             console.log(this.projects.length);
@@ -107,7 +107,7 @@
                     });
             },
             getProject : function(id) {
-                this.$http.get('http://localhost:4941/api/v2/projects/' + id)
+                this.$http.get('http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/' + id)
                     .then(function (response) {
                         this.selected = response.data;
                     }, function (error) {
@@ -118,7 +118,7 @@
             },
             createdFilter : function () {
                 this.filter = "Created";
-                this.$http.get('http://127.0.0.1:4941/api/v2/projects/?creator=' + localStorage.getItem('id'))
+                this.$http.get('http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/?creator=' + localStorage.getItem('id'))
                     .then(function (response) {
                         this.projects = response.data;
                         this.results = this.projects.slice(0, 9);
@@ -129,7 +129,7 @@
                     });
             },
             backedFilter : function () {
-                this.$http.get('http://127.0.0.1:4941/api/v2/projects/?open=true&backer=' + localStorage.getItem('id'))
+                this.$http.get('http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/?open=true&backer=' + localStorage.getItem('id'))
                     .then(function (response) {
                         this.projects = response.data;
                         this.results = this.projects.slice(0, 9);

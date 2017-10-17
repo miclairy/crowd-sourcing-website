@@ -91,7 +91,7 @@ export default {
             return isUser;
         },
         logout : function () {
-            this.$http.post('http://localhost:4941/api/v2/users/logout', {}, {headers: {'x-authorization': localStorage.getItem("token")}})
+            this.$http.post('http://csse-s365.canterbury.ac.nz:4836/api/v2/users/logout', {}, {headers: {'x-authorization': localStorage.getItem("token")}})
                 .then(function (response) {
                     if (response.status == 200) {
                         localStorage.setItem("token", null);
@@ -108,7 +108,7 @@ export default {
                 });
         },
         getUser : function () {
-              this.$http.get('http://localhost:4941/api/v2/users/' + localStorage.getItem("id"), {headers: {'x-authorization': localStorage.getItem("token")}})
+              this.$http.get('http://csse-s365.canterbury.ac.nz:4836/api/v2/users/' + localStorage.getItem("id"), {headers: {'x-authorization': localStorage.getItem("token")}})
                   .then(function (response) {
                       if (response.status == 200) {
                           this.username = response.data.username;

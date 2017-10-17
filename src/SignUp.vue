@@ -119,7 +119,7 @@
                     this.errorFlag = true;
                 }
                 if (this.errorFlag == false) {
-                    this.$http.post('http://localhost:4941/api/v2/users', JSON.stringify(userData))
+                    this.$http.post('http://csse-s365.canterbury.ac.nz:4836/api/v2/users', JSON.stringify(userData))
                         .then(function (response) {
                             if (response.status == 201) {
                                 this.errorFlag = false;
@@ -134,7 +134,7 @@
                         });
                 }
             }, login : function () {
-                this.$http.post('http://localhost:4941/api/v2/users/login?username=' + this.username + "&password=" + this.password)
+                this.$http.post('http://csse-s365.canterbury.ac.nz:4836/api/v2/users/login?username=' + this.username + "&password=" + this.password)
                     .then(function (response) {
                         if (response.status == 200) {
                             this.errorFlag = false;

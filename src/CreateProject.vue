@@ -96,7 +96,7 @@
                         }],
                         rewards: this.rewards
                     };
-                    this.$http.post('http://localhost:4941/api/v2/projects', JSON.stringify(project), {headers: {'x-authorization': localStorage.getItem("token")}})
+                    this.$http.post('http://csse-s365.canterbury.ac.nz:4836/api/v2/projects', JSON.stringify(project), {headers: {'x-authorization': localStorage.getItem("token")}})
                         .then(function (response) {
                             if (response.status == 201) {
                                 alert("created " + this.title);
@@ -104,7 +104,7 @@
 
                                 console.log(this.image);
                                 if (this.image !== "") {
-                                    this.$http.put('http://localhost:4941/api/v2/projects/' + response.body.id + '/image', this.image, {
+                                    this.$http.put('http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/' + response.body.id + '/image', this.image, {
                                         headers: {
                                             'x-authorization': localStorage.getItem("token"),
                                             'content-type': this.image.type
