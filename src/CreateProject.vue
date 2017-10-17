@@ -1,83 +1,56 @@
 <template>
-    <div>
+    <div class="createWidth">
         <h2>Create a Project</h2>
         <v-container fluid v-if="! isLoggedIn()">
             <v-layout row>
-                <v-flex xs4>
-                    <v-subheader>Title</v-subheader>
-                </v-flex>
-                <v-flex xs8>
-                    <v-text-field v-model="title" label="Free Donuts"></v-text-field>
-                </v-flex>
-            </v-layout>
+            <v-flex lg6>
+                <v-text-field class="createField" v-model="title" label="Title"></v-text-field>
+                <v-text-field class="createField" v-model="subtitle" name="input-2-3" label="Subtitle" ></v-text-field>
+                <v-text-field class="createField" v-model="description" name="input-7-3" label="Description" multi-line></v-text-field>
+                <v-text-field class="createField" v-model="target" error :rules="[checkIfCost(target)]" label="Target Amount" prefix="$"></v-text-field>
+                <h6>Rewards</h6>
             <v-layout row>
-                <v-flex xs4>
-                    <v-subheader>Subtitle</v-subheader>
+                <v-flex xs8 class="ml-3">
+                    <v-text-field class="createField" v-model="amount" label="Amount" prefix="$" error :rules="[checkIfCost(amount)]" value="10.00"></v-text-field>
                 </v-flex>
-                <v-flex xs8>
-                    <v-text-field v-model="subtitle" name="input-2-3" label="for everyone" single-line></v-text-field>
-                </v-flex>
-            </v-layout>
-            <v-layout row>
-                <v-flex xs4>
-                    <v-subheader>Description</v-subheader>
-                </v-flex>
-                <v-flex xs8>
-                    <v-text-field v-model="description" name="input-7-3" label="Talk about your project" multi-line></v-text-field>
-                </v-flex>
-            </v-layout>
-            <v-layout row>
-                <v-flex xs4>
-                    <v-subheader>Target</v-subheader>
-                </v-flex>
-                <v-flex xs8>
-                    <v-text-field  v-model="target" error :rules="[checkIfCost(target)]" label="Amount" value="10021.00" prefix="$"></v-text-field>
-                </v-flex>
-            </v-layout>
-            <v-flex>
-                <v-layout row>
-
-                        <v-subheader>Upload images</v-subheader>
-                    <label id="uploadImage" for="inputImage"><icon scale="3" name="camera"></icon></label>
-
-                    <input type="file" v-on:change="preview($event.target.files[0]);" accept="image/*" id="inputImage">
-                        <img src="" id="preview"/>
-                </v-layout>
-            </v-flex>
-
-            <v-layout row>
-                <v-flex xs4>
-                <v-subheader>Rewards</v-subheader>
-                </v-flex>
-                <v-flex xs8>
-                    <v-text-field v-model="amount" label="Amount" error :rules="[checkIfCost(amount)]" value="10.00"></v-text-field>
-                </v-flex>
-                <v-flex xs8>
-                    <v-text-field v-model="reward_description" label="Description"></v-text-field>
+                <v-flex xs8 class="ml-3">
+                    <v-text-field class="createField" v-model="reward_description" label="Description"></v-text-field>
                 </v-flex>
                 <v-spacer></v-spacer>
 
-                <v-flex xs8>
+                <v-flex xs8 class="">
                 <v-btn class="pink" small top right fab v-on:click="addReward()"> <v-icon>add</v-icon> </v-btn>
                 </v-flex>
             </v-layout>
 
 
-
-            <v-flex xs4 v-for="reward in rewards">
-                <v-layout row>
-                        <p> {{reward.amount}} </p>
-                    <v-spacer></v-spacer>
-                        <p> {{ reward.description }} </p>
-                    <v-spacer></v-spacer>
-                    <v-btn small v-on:click="deleteReward(reward)"> <v-icon>clear</v-icon></v-btn>
-                    <v-btn small v-on:click="editReward(reward)"> <v-icon>edit</v-icon></v-btn>
-                </v-layout>
+            <table class="rewards">
+            <!--<v-flex xs4 >-->
+                <tr v-for="reward in rewards">
+                    <!--<v-flex xs8 class="ml-3">-->
+                        <td class="data"> ${{reward.amount}} </td>
+                    <!--</v-flex>-->
+                    <!--<v-spacer></v-spacer>-->
+                    <!--<v-flex xs8 class="ml-3">-->
+                        <td class="data"> {{ reward.description }} </td>
+                    <!--</v-flex>-->
+                    <!--<v-spacer></v-spacer>-->
+                    <td><v-icon v-on:click="deleteReward(reward)" class="iconButton">clear</v-icon></td>
+                <td><v-icon v-on:click="editReward(reward)" class="iconButton">edit</v-icon></td>
+                </tr>
+            </table>
+            <!--</v-flex>-->
             </v-flex>
-
+            <v-flex lg6 class="imagebox">
+                <h6>Upload images</h6>
+                    <label v-if="image==''" id="uploadImage" for="inputImage"><icon class="iconButton" scale="3" name="camera"></icon></label>
+                <label v-else id="changeImage" for="inputImage"><icon scale="3" name="camera"></icon></label>
+                <v-icon v-if="image!==''" v-on:click="clearImage()" class="iconButton" scale="3" x-large id="clearImage" >clear</v-icon>
+                <img src="" id="preview"/>
+                    <input type="file" v-on:change="preview($event.target.files[0]);" accept="image/*" id="inputImage">
+            </v-flex>
+            </v-layout>
             <button class="createbtn" type="button" v-on:click="createProject()">Create Project</button>
-
-
         </v-container>
 
         <h3 v-if="isLoggedIn()">You mst log in to create a project</h3>
@@ -112,7 +85,7 @@
                     "title": this.title,
                     "subtitle": this.subtitle,
                     "description": this.description,
-                    "target": parseInt(this.target),
+                    "target": parseInt(this.target) * 100,
                     creators: [ {
                         "id" : parseInt(localStorage.getItem('id'))
                     }],
@@ -120,19 +93,23 @@
                 };
                 this.$http.post('http://localhost:4941/api/v2/projects', JSON.stringify(project), {headers: {'x-authorization': localStorage.getItem("token")}})
                     .then(function (response) {
-                        if (response.status == 201){
+                        if (response.status == 201) {
                             alert("created " + this.title);
                             console.log(response.body.id);
                             console.log(this.image);
-                            this.$http.put('http://localhost:4941/api/v2/projects/' + response.body.id + '/image', this.image, {headers: {
-                                'x-authorization': localStorage.getItem("token"),
-                                'content-type' : this.image.type
-                            }})
-                                .then (function (response) {
-                                  console.log(response)
+                            if (this.image !== "") {
+                                this.$http.put('http://localhost:4941/api/v2/projects/' + response.body.id + '/image', this.image, {
+                                    headers: {
+                                        'x-authorization': localStorage.getItem("token"),
+                                        'content-type': this.image.type
+                                    }
                                 })
-                        } else {
-                            console.log(response);
+                                    .then(function (response) {
+                                        console.log(response)
+                                    })
+                            } else {
+                                console.log(response);
+                            }
                         }
                     } , function (error) {
                         console.log(error);
@@ -194,22 +171,17 @@
             }, isLoggedIn : function () {
                 let isUser = localStorage.getItem("id") == "null" || localStorage.getItem("id") == 'undefined' || localStorage.getItem('id') == null;
                 return isUser;
-            },
+            }, clearImage : function () {
+                this.image = "";
+                var preview = document.querySelector('img'); //selects the query named img
+                preview.src = "";
+            }
         }
     }
 </script>
 
 <style>
-    .create {
-        outline: 0;
-        background: #f2f2f2;
-        width: 100%;
-        border: 0;
-        margin: 5px -5px 15px;
-        padding: 15px;
-        box-sizing: border-box;
-        font-size: 14px;
-    }
+
     .createbtn {
         font-family: "Roboto", sans-serif;
         text-transform: uppercase;
@@ -228,6 +200,11 @@
         background: #43A047;
     }
 
+    .createWidth {
+        /*max-width: 1400px;*/
+        /*background-color: darkturquoise;*/
+    }
+
     #inputImage {
         width: 0.1px;
         height: 0.1px;
@@ -243,6 +220,9 @@
         color: white;
         background-color: #6f14a1;
         display: inline-block;
+        padding: 200px;
+        margin-left: 40px;
+        margin-right: 20px;
     }
 
     #uploadImage:focus,
@@ -253,4 +233,58 @@
     #uploadImage {
         cursor: pointer; /* "hand" cursor */
     }
+
+
+    .iconButton {
+        cursor: pointer; /* "hand" cursor */
+    }
+
+    .iconButton:hover{
+        color: #595160;
+    }
+
+    .createField{
+        margin-left: 60px;
+        margin-right: 60px;
+    }
+
+    .data {
+        text-align: left;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .rewards{
+        width: 100%;
+        margin-left: 60px;
+        font-size: larger;
+    }
+
+    #changeImage {
+        margin: auto;
+        cursor: pointer;
+        z-index: 5;
+        position: absolute;
+        color: inherit;
+    }
+
+    #clearImage {
+        cursor: pointer;
+        position: absolute;
+        z-index: 5;
+        margin-top: 50px;
+    }
+
+    #preview {
+        margin: auto;
+        width: 50%;
+    }
+
+    .imagebox {
+        margin-left: 80px ;
+        align-content: center;
+
+    }
+
+
 </style>
