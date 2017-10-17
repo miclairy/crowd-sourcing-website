@@ -36,9 +36,10 @@
             </v-flex>
             <v-flex lg6 class="imagebox">
                 <h6>Project Image</h6>
-                    <label v-if="image==''" id="uploadImage" for="inputImage"><icon class="iconButton" scale="3" name="camera"></icon></label>
-                <label v-else id="changeImage" for="inputImage"><icon scale="3" name="camera"></icon></label>
-                <v-icon v-if="image!==''" v-on:click="clearImage()" class="iconButton" scale="3" x-large id="clearImage" >clear</v-icon>
+                <label v-if="image==''" id="uploadImage" for="inputImage"><icon class="iconButton" scale="3" name="camera"></icon></label>
+                <label v-else id="changeImage" for="inputImage"><icon scale="2" name="camera"></icon></label>
+                <v-icon v-if="image!==''" v-on:click="clearImage()" class="iconButton" scale="3" large id="clearImage" >clear</v-icon>
+
                 <img src="" id="preview"/>
                     <input type="file" v-on:change="preview($event.target.files[0]);" accept="image/*" id="inputImage">
             </v-flex>
@@ -277,15 +278,15 @@
     #changeImage {
         cursor: pointer;
         z-index: 5;
-        position: absolute;
         color: inherit;
+        margin-right: auto;
     }
 
     #clearImage {
         cursor: pointer;
-        position: absolute;
         z-index: 5;
-        margin-top: 50px;
+        margin-left: 60%;
+        padding-bottom: 20px;
     }
 
     #preview {
