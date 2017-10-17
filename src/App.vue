@@ -15,6 +15,9 @@
 
         </v-toolbar-items>
       </v-toolbar>
+      <v-alert color="info" icon="info" dismissible v-model="alert">
+        You have been logged out
+      </v-alert>
 
     <v-navigation-drawer temporary v-model="drawer" light absolute>
       <v-list class="pa-1">
@@ -79,7 +82,8 @@ export default {
     data(){
         return {
             username : "",
-            drawer: false
+            drawer: false,
+            alert: false
         }
     },
     methods : {
@@ -87,6 +91,7 @@ export default {
             let isUser = localStorage.getItem("id") == "null" || localStorage.getItem("id") == 'undefined' || localStorage.getItem('id') == null ;
             if (! isUser){
                 this.getUser();
+                this.alert = false;
             }
             return isUser;
         },
@@ -97,7 +102,7 @@ export default {
                         localStorage.setItem("token", null);
                         localStorage.setItem("id", null);
                         this.username = "";
-                        alert("Goodbye");
+                        this.alert = true;
                     } else {
                         console.log(response)
                     }
