@@ -105,8 +105,8 @@
                     </div>
                     <div class="modal-footer">
                         <input type="checkbox" v-model="pledgeData.anonymous" name="Anonymous" value="anonymous"> Anonymous
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="pledge()">Pledge</button>
+                        <button type="button" style="background-color: darkred; color: whitesmoke" class="btn" data-dismiss="modal">Cancel</button>
+                        <button type="button" id="pledgeButtonSmall" class="btn" data-dismiss="modal" v-on:click="pledge()">Pledge</button>
                     </div>
                 </div>
 
@@ -342,6 +342,12 @@
 
     .pledge {
         border-bottom: dotted;
+    }
+
+    #pledgeButtonSmall {
+        background-color: #6f14a1;
+        color: whitesmoke;
+        margin-bottom: 5px;
     }
 
 </style>
