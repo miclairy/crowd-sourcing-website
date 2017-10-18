@@ -59,7 +59,8 @@
                 count: 0,
                 allLoaded: false,
                 searchText: "",
-                filter: "Filter"
+                filter: "Filter",
+                lastSearch: ""
             }
         },
         mounted: function () {
@@ -67,7 +68,12 @@
         },
         computed: {
             search : function () {
+
                 if (this.searchText.length > 0) {
+                    if (this.searchText !== this.lastSearch) {
+                        this.count = 6;
+                        this.lastSearch = this.searchText;
+                    }
                     this.results = [];
                     for (let i = 0; i < this.projects.length; i += 1) {
                         if (this.projects[i].title.toLowerCase().indexOf(this.searchText.toLowerCase()) !== -1 ||
