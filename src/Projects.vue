@@ -149,13 +149,24 @@
                 this.count = 0;
                 this.filter = "Backed";
                 this.results = [];
+                if (!this.isLoggedIn()){
                 this.backedFilter();
+                } else {
+                    this.getProjects()
+                }
+
             },
             setCreated : function () {
                 this.count = 0;
                 this.filter = "Created";
                 this.results = [];
-                this.createdFilter();
+                if (!this.isLoggedIn()) {
+
+                    this.createdFilter();
+                } else {
+                    this.getProjects()
+                }
+
             },
             loadMore : function () {
                 this.count += 6;
