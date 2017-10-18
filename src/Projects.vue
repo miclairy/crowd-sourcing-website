@@ -5,7 +5,7 @@
         </div>
         <v-layout row >
             <v-text-field v-model="searchText" single-line label="Search Projects...." :append-icon="'search'" class="search"></v-text-field>
-            <v-menu open-on-hover v-if="! isLoggedIn()" class="center">
+            <v-menu open-on-hover v-if="! isLoggedIn()" class="center" transition="fade-transition">
                 <v-btn slot="activator" flat>
                     {{ filter}} <v-icon>arrow_drop_down</v-icon>
                 </v-btn>
@@ -27,10 +27,8 @@
             <v-container grid-list-lg fluid id="projects">
                 <v-layout row wrap>
                 <v-flex d-flex lg4 id="project" v-for="project in search">
-                    <v-card  class="v-card" height="100%">
-                        <router-link :to="{ name : 'project', params: { projectId: project.id} }">
+                    <v-card  class="v-card" height="100%" :to="{ name : 'project', params: { projectId: project.id} }">
                             <v-card-media v-bind:src="'http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/' + project.id + '/image'" height="250"/>
-                        </router-link>
                         <v-card-title primary-title>
                             <h3 class="headline mb-0 textProject"><router-link :to="{ name : 'project', params: { projectId: project.id} }">{{ project.title }} </router-link></h3>
                         </v-card-title>
