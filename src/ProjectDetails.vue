@@ -49,7 +49,7 @@
                 <h2 class="leftAligned"> Pledges </h2>
                 <v-container class="pledge" >
                     <h4 v-if="anonymousPledged > 0" class="headline mb-0"><b>${{anonymousPledged / 100}} </b></h4>
-                    <p v-if="anonymousPledged > 0"> Anonymous </p>
+                    <p v-if="anonymousPledged > 0"> {{anonymousBackers}} Anonymous backers </p>
                 </v-container>
                 <v-container class="pledge" v-for="backer in selected.backers.slice(0, 5)" v-if="backer.username != 'anonymous'">
                     <h4 class="headline mb-0"><b>${{ backer.amount / 100 }} </b></h4>
@@ -131,6 +131,7 @@
                 percentage: 0,
                 amountPledged : 0,
                 anonymousPledged: 0,
+                anonymousBackers: 0,
                 id : -1,
                 owner : false,
                 loaded : false,
@@ -161,6 +162,7 @@
                 this.id = id;
                 this.imageSrc = 'http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/' + this.id + '/image?' + moment();
                 this.amountPledged = 0;
+                this.anonymousBackers = 0;
                 this.anonymousPledged = 0;
                 if (id != null) {
                     this.$http.get('http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/' + id)
@@ -182,8 +184,12 @@
                                     this.numberOfBackers += 1;
                                 }
                                 this.amountPledged += this.selected.backers[i].amount;
-                                if (this.selected.backers[i].username == "anonymous"){
+
+                            }
+                            for (var i = 0; i < response.data.backers.slice(0,5).length; i += 1) {
+                                if (response.data.backers[i].username == "anonymous") {
                                     this.anonymousPledged += this.selected.backers[i].amount;
+                                    this.anonymousBackers += 1;
                                 }
                             }
 
