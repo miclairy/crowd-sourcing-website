@@ -98,7 +98,7 @@
                                     <v-subheader>Credit Card</v-subheader>
                                 </v-flex>
                                 <v-flex xs8>
-                                    <v-text-field v-model="pledgeData.card.authToken" :rules="required" ></v-text-field>
+                                    <v-text-field v-model="pledgeData.card.authToken" :mask="'credit-card'" :rules="required" ></v-text-field>
                                 </v-flex>
                             </v-layout>
                         </v-container>
