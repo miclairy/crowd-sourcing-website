@@ -49,7 +49,7 @@
 
         </v-container>
 
-        <h3 v-if="isLoggedIn()">You mst log in to create a project</h3>
+        <h3 v-if="isLoggedIn()">You must log in to create a project</h3>
 
 
     </div>
