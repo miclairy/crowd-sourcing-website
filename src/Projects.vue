@@ -92,7 +92,7 @@
                     .then(function (response) {
                         if (response.data.length > 0) {
                             console.log(this.projects.length);
-                            this.projects = this.projects.concat(response.data);
+                            this.projects = response.data;
                             this.results = this.projects.slice(0, 6);
                             console.log(this.results);
                             this.count += 6;
