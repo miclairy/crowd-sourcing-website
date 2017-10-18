@@ -27,7 +27,8 @@
             <v-container grid-list-lg fluid id="projects">
                 <v-layout row wrap>
                 <v-flex d-flex lg4 id="project" v-for="project in search">
-                    <v-card  class="v-card" height="100%" :to="{ name : 'project', params: { projectId: project.id} }">
+                    <router-link :to="{ name : 'project', params: { projectId: project.id} }">
+                    <v-card  class="v-card" height="100%" >
                             <v-card-media v-bind:src="'http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/' + project.id + '/image'" height="250"/>
                         <v-card-title primary-title>
                             <h3 class="headline mb-0 textProject"><router-link :to="{ name : 'project', params: { projectId: project.id} }">{{ project.title }} </router-link></h3>
@@ -35,6 +36,7 @@
                             <div class="textProject smText"> {{project.subtitle }} </div>
 
                     </v-card>
+                    </router-link>
                 </v-flex>
                     <h3 v-if="projects.length <= 0"> There are no projects for this filter</h3>
                 </v-layout>

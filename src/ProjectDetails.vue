@@ -145,7 +145,8 @@
                 imageSrc: "",
                 costRule: [
                     (v) => !!v || 'Required',
-                    (v) => !isNaN(v) || 'Must be a cost',
+                    (v) => !isNaN(v) || 'Must be a dollar amount',
+                    (v) => v >= 1 || 'Must be at least a dollar'
                 ],
                 required: [
                     (v) => !!v || 'Required',
@@ -202,7 +203,7 @@
                 }
             },
             pledge : function () {
-                if (this.pledgeData.amount.length > 0 && this.pledgeData.card.authToken.length > 0) {
+                if (this.pledgeData.amount.length > 0 && this.pledgeData.card.authToken.length > 0 && parseInt(this.pledgeData.amount) >= 1) {
                     this.pledgeData.amount = parseInt(this.pledgeData.amount) * 100;
                     console.log(this.pledgeData.anonymous);
                     this.$http.post('http://csse-s365.canterbury.ac.nz:4836/api/v2/projects/' + this.id + "/pledge", JSON.stringify(this.pledgeData),
