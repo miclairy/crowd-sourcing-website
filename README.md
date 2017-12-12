@@ -1,5 +1,7 @@
 # Crowd Sourcing website
 
+Assignment for University year 3
+
 > A Vue.js project
 
 ## Build Setup
