@@ -1,6 +1,19 @@
 # Crowd Sourcing website
 
-Assignment for University year 3
+Single page application for an assignment for University in year 3.
+This is the front end of the crowd sourcing api.
+
+Features:
+  * Lazy Loading on projects page
+  * Vue templating
+  * Login, log out
+  * Viewing projects
+  * Backing projects
+
+To run:
+  1. Open database mysql.
+  2. Run back end api.
+  3. Open this project with a browser.
 
 > A Vue.js project
 
