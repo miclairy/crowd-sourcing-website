@@ -2,6 +2,7 @@
 
 Single page application for an assignment for University in year 3.
 This is the front end of the crowd sourcing api.
+Currently looks at a hosted api at http://csse-s365.canterbury.ac.nz:4836 which is only accessable from the university of canterbury.
 
 Features:
   * Lazy Loading on projects page
@@ -9,11 +10,6 @@ Features:
   * Login, log out
   * Viewing projects
   * Backing projects
-
-To run:
-  1. Open database mysql.
-  2. Run back end api.
-  3. Open this project with a browser.
 
 > A Vue.js project
 
